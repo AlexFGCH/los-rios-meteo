@@ -11,7 +11,8 @@ from rasterio.features import geometry_mask
 from shapely.geometry import shape,box,mapping
 from shapely.ops import transform
 from pyproj import Transformer
-from actualizar_imerg import save_json,dibujar_jenks
+from actualizar_imerg import save_json
+from PIL import Image
 ROOT=Path(__file__).resolve().parents[1]
 LOCAL=timezone(timedelta(hours=-5));BASE='https://services.geoglows.org/geoserver/wrf/'
 LAYER='wrf_precipitation_daily';NODATA=-9999.
@@ -83,12 +84,7 @@ def process(session,init,date,zones,area):
         # Mostrar todos los empates en el corte de tres cantones.
         threshold=nonzero[min(2,len(nonzero)-1)]['posicion_relativa']
         top=[p for p in nonzero if p['posicion_relativa']<=threshold]
-    legend=dibujar_jenks(values,display,folder/(key+'.png'))
-    labels=['Menor precipitacion relativa prevista','Precipitacion relativa intermedia baja','Precipitacion relativa intermedia','Precipitacion relativa intermedia alta','Mayor precipitacion relativa prevista']
-    n=legend['categorias'];indices=np.round(np.linspace(0,4,n)).astype(int) if n>1 else [0]
-    legend.pop('limites',None);legend['rangos']=[labels[i] for i in indices] if n>1 else ['Valor uniforme en el area']
-    legend['titulo']='Distribucion relativa del pronostico'
-    legend['nota']='Clases Jenks propias de esta fecha; no representan niveles de amenaza ni permiten comparar intensidades entre fechas.'
+    legend=dibujar_stretched(values,display,folder/(key+'.png'))
     left,top_y=grid*(0,0);right,bottom=grid*(values.shape[1],values.shape[0])
     result={'tipo':'pronostico','fuente':'WRF · servicio del visor INAMHI','fecha_fin':date.date().isoformat(),
       'fecha_servicio':fmt(date),'inicializacion':fmt(init),'generado':datetime.now(LOCAL).isoformat(),
@@ -100,6 +96,24 @@ def process(session,init,date,zones,area):
     save_json(folder/(key+'.json'),result)
     print('WRF guardado:',key,flush=True)
     return key
+
+def dibujar_stretched(values,valid,path):
+    # Rampa lineal minimo-maximo; punto central en (minimo+maximo)/2.
+    sample=values[valid]
+    if not sample.size:raise RuntimeError('Sin valores validos para la rampa.')
+    low,high=float(sample.min()),float(sample.max())
+    fraction=np.zeros(values.shape,dtype='float64')
+    if high>low:fraction[valid]=(values[valid]-low)/(high-low)
+    anchors=np.array([[40,146,199],[250,250,100],[232,16,20]],dtype='float64')
+    rgba=np.zeros(values.shape+(4,),dtype='uint8')
+    for channel in range(3):
+        rgba[:,:,channel][valid]=np.rint(np.interp(fraction[valid],[0,.5,1],anchors[:,channel])).astype('uint8')
+    rgba[:,:,3][valid]=255
+    Image.fromarray(rgba).save(path)
+    return {'tipo':'stretched','titulo':'Precipitación prevista',
+        'colores':['#2892c7','#fafa64','#e81014'],
+        'rangos':['Menor','Intermedia','Mayor'],
+        'uniforme':high==low,'escala':'Lineal minimo-maximo por fecha; punto medio aritmetico.'}
 
 def main():
     data=ROOT/'data';data.mkdir(exist_ok=True);session=requests.Session()
