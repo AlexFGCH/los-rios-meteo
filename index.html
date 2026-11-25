@@ -8,7 +8,7 @@
 <header><small>LOS RÍOS Y CANTONES ALEDAÑOS · ECUADOR</small><h1>Monitor hidrometeorológico</h1><p>Consulta territorial de precipitaciones y pronósticos</p></header>
 <main><div class="notice" id="weatherStatus" role="status"><strong>Primera etapa: mapa territorial.</strong> Los límites ya están incorporados. La precipitación y la actualización automática todavía no están conectadas.</div>
 <section class="stats" aria-label="Cobertura territorial"><div class="stat"><b>68</b><span>Unidades territoriales · incluye una zona en estudio</span></div><div class="stat"><b>13</b><span>Cantones de Los Ríos</span></div><div class="stat"><b>7</b><span>Cantones de Bolívar</span></div></section>
-<div class="layout"><aside class="panel sidebar"><h2>Explorar el territorio</h2><label for="source">Fuente de precipitación</label><select id="source"><option value="imerg">NASA GPM IMERG Early</option><option value="pdir">PDIR-Now CHRS</option><option value="chirps">CHIRPS · pendiente</option></select><label for="date">Fecha final del acumulado (07h00)</label><select id="date"><option value="">Cargando disponibilidad…</option></select><label for="province">Provincia</label><select id="province"><option value="">Todas las provincias</option></select><label for="search">Buscar cantón</label><input id="search" type="search" placeholder="Ej.: Babahoyo, Caluma…" autocomplete="off"><label class="check"><input id="buffer" type="checkbox"> Mostrar límite de descarga</label><button id="reset" type="button">Ver toda el área</button><div id="count" role="status" aria-live="polite"></div><div id="list" aria-label="Cantones encontrados"></div></aside>
+<div class="layout"><aside class="panel sidebar"><h2>Explorar el territorio</h2><label for="source">Fuente de precipitación</label><select id="source"><option value="imerg">NASA GPM IMERG Early</option><option value="pdir">PDIR-Now CHRS</option><option value="chirps">CHIRPS v3 SAT</option></select><label id="dateLabel" for="date">Fecha final del acumulado (07h00)</label><select id="date"><option value="">Cargando disponibilidad…</option></select><label for="province">Provincia</label><select id="province"><option value="">Todas las provincias</option></select><label for="search">Buscar cantón</label><input id="search" type="search" placeholder="Ej.: Babahoyo, Caluma…" autocomplete="off"><label class="check"><input id="buffer" type="checkbox"> Mostrar límite de descarga</label><button id="reset" type="button">Ver toda el área</button><div id="count" role="status" aria-live="polite"></div><div id="list" aria-label="Cantones encontrados"></div></aside>
 <section class="mapwrap" aria-label="Mapa interactivo"><div id="map"></div></section></div>
 <section class="panel details" id="details" aria-live="polite"><h2>Selecciona un cantón</h2><div class="subtle">Haz clic en el mapa o en el listado para consultar su nombre, provincia y código. Los colores distinguen territorios; no representan lluvia ni niveles de amenaza.</div></section>
 <footer>Base territorial: archivos CANTONES_CUENCA_L y buffer proporcionados para este proyecto. Año del atributo DPA: 2025. Límites simplificados para visualización; los cálculos deben usar las geometrías originales.<br>La vecindad entre cantones no determina por sí sola el aporte de agua: ese análisis requiere las cuencas y la conexión de los ríos. Cartografía base: © OpenStreetMap contributors.</footer></main>
@@ -56,11 +56,13 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
  document.getElementById('buffer').addEventListener('change',e=>e.target.checked?buffer.addTo(map):map.removeLayer(buffer));
  document.getElementById('reset').addEventListener('click',()=>{province.value='';search.value='';filter(false);map.fitBounds(allBounds,{padding:[15,15]})});
  const legend=L.control({position:'bottomright'});legend.onAdd=()=>{let d=L.DomUtil.create('div','legend');d.innerHTML='<strong>Límites territoriales</strong><br><i class="swatch" style="background:#257854"></i>Los Ríos<br><i class="swatch" style="background:#b7872b"></i>Bolívar<br><i class="swatch" style="background:#849bab"></i>Otros territorios';L.DomEvent.disableClickPropagation(d);return d};legend.addTo(map);
+ function periodText(d){return d.fecha_producto?'Día '+d.fecha_producto+' · '+d.estado_producto+' · etiqueta diaria UTC; no corresponde a 07h00–07h00 Ecuador':d.inicio.slice(0,10)+' 07h00 a '+d.fin.slice(0,10)+' 07h00 Ecuador · '+d.intervalos+' intervalos completos';}
  function rainInfo(code){
   if(!weatherData)return '<p class="subtle">No hay un acumulado conectado para esta selección.</p>';
   const s=weatherData.cantones.find(s=>s.codigo===code);
   if(!s||s.media_mm===null)return '<p class="subtle">Sin cobertura completa para este cantón.</p>';
-  return '<p><strong>Media: '+Number(s.media_mm).toFixed(2)+' mm</strong> · Máxima de celda: '+Number(s.maxima_mm).toFixed(2)+' mm</p><p class="subtle">'+esc(weatherData.inicio.slice(0,10))+' 07h00 a '+esc(weatherData.fin.slice(0,10))+' 07h00 (Ecuador). Media ponderada por área; resolución original: '+esc(weatherData.resolucion)+'. No representa una medición puntual.</p>';
+  let extra=weatherData.fecha_producto?'<p class="subtle">CHIRPS v3 SAT distribuye acumulados pentadales con IMERG Late: no es una validación diaria independiente de IMERG. Las ventanas de observación de las estaciones pueden variar.</p>':'';
+  return '<p><strong>Media: '+Number(s.media_mm).toFixed(2)+' mm</strong> · Máxima de celda: '+Number(s.maxima_mm).toFixed(2)+' mm</p><p class="subtle">'+esc(periodText(weatherData))+'. Media ponderada por área. Resolución: '+esc(weatherData.resolucion)+'.</p>'+extra;
  }
  const src=document.getElementById('source'),dates=document.getElementById('date'),status=document.getElementById('weatherStatus');
  let requestId=0,catalog={imerg:[],pdir:[]},lastState=null,sourceStates={};
@@ -72,24 +74,24 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
  async function loadRain(){
   const token=++requestId;clearRain();
   document.getElementById('details').innerHTML='<h2>Selecciona un cantón</h2><p class="subtle">Los valores corresponden únicamente a la fuente y período seleccionados.</p>';
-  if(!['imerg','pdir'].includes(src.value)){status.textContent='Esta fuente todavía no está conectada. No se muestran datos de otro producto en su lugar.';return;}
+  if(!['imerg','pdir','chirps'].includes(src.value)){status.textContent='Esta fuente todavía no está conectada. No se muestran datos de otro producto en su lugar.';return;}
   lastState=sourceStates[src.value]||null;const day=dates.value;
-  if(!day){status.textContent=(src.value==='pdir'?'PDIR-Now':'IMERG')+': esperando el primer período completo. '+(lastState?.mensaje||'Ejecuta el flujo de GitHub Actions para descargar los datos.');return;}
+  if(!day){status.textContent=({imerg:'IMERG',pdir:'PDIR-Now',chirps:'CHIRPS'}[src.value])+': esperando el primer período completo. '+(lastState?.mensaje||'Ejecuta el flujo de GitHub Actions para descargar los datos.');return;}
   status.textContent='Cargando acumulado…';
   try{
    const response=await fetch('data/'+src.value+'/'+encodeURIComponent(day)+'.json',{cache:'no-store'});if(!response.ok)throw Error();
    const d=await response.json();if(token!==requestId)return;
-   if(d.intervalos!==(src.value==='pdir'?24:48)||d.unidad!=='mm')throw Error();weatherData=d;
+   if(d.intervalos!==({imerg:48,pdir:24,chirps:1}[src.value])||d.unidad!=='mm')throw Error();weatherData=d;
    rainLayer=L.imageOverlay(d.imagen,d.bounds,{pane:'rain',opacity:0.85,interactive:false}).addTo(map);
    rainLayer.on('error',()=>{if(token===requestId)status.textContent='No pudo cargarse la imagen del acumulado. Revisa la publicación.'});rainLegend.addTo(map);
-   status.textContent=d.fuente+' · '+d.inicio.slice(0,10)+' 07h00 a '+d.fin.slice(0,10)+' 07h00 Ecuador · '+d.intervalos+' intervalos completos. Procesado: '+d.generado.slice(0,16).replace('T',' ')+' (UTC-5).'+(lastState?.estado==='pendiente'?' Último intento: '+lastState.mensaje:'');
+   status.textContent=d.fuente+' · '+periodText(d)+' · Procesado: '+d.generado.slice(0,16).replace('T',' ')+' (UTC-5).'+(lastState?.estado==='pendiente'?' Último intento: '+lastState.mensaje:'');
   }catch(e){if(token===requestId){clearRain();status.textContent='No se pudo cargar el acumulado seleccionado. No se mostrarán valores de ejemplo.';}}
  }
- function setDates(){dates.replaceChildren();const days=catalog[src.value]||[];if(!days.length){let o=new Option('Sin períodos disponibles','');dates.add(o);}else days.forEach(d=>dates.add(new Option(d,d)));loadRain();}
+ function setDates(){document.getElementById('dateLabel').textContent=src.value==='chirps'?'Fecha del producto diario CHIRPS':'Fecha final del acumulado (07h00)';dates.replaceChildren();const days=catalog[src.value]||[];if(!days.length){let o=new Option('Sin períodos disponibles','');dates.add(o);}else days.forEach(d=>dates.add(new Option(d,d)));loadRain();}
  src.addEventListener('change',setDates);dates.addEventListener('change',loadRain);
  async function initWeather(){
   try{const r=await fetch('data/catalogo.json',{cache:'no-store'});if(!r.ok)throw Error();catalog=await r.json();}catch(e){catalog={imerg:[]};}
-  for(const [key,file] of [['imerg','estado.json'],['pdir','estado_pdir.json']]){try{const r=await fetch('data/'+file,{cache:'no-store'});if(r.ok)sourceStates[key]=await r.json();}catch(e){}}
+  for(const [key,file] of [['imerg','estado.json'],['pdir','estado_pdir.json'],['chirps','estado_chirps.json']]){try{const r=await fetch('data/'+file,{cache:'no-store'});if(r.ok)sourceStates[key]=await r.json();}catch(e){}}
   setDates();
  }
  initWeather();
