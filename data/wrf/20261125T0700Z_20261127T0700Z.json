@@ -4,7 +4,7 @@
   "fecha_fin": "2026-11-27",
   "fecha_servicio": "2026-11-27T07:00:00.000Z",
   "inicializacion": "2026-11-25T07:00:00.000Z",
-  "generado": "2026-11-25T16:28:57.802483-05:00",
+  "generado": "2026-11-25T16:42:25.524848-05:00",
   "intervalos": 1,
   "unidad": "mm",
   "convencion_temporal": "Producto diario. Extremos horarios del acumulado pendientes de confirmar; TIME no se interpreta como inicio ni fin local.",
@@ -22,25 +22,20 @@
   "raster": "data/wrf/20261125T0700Z_20261127T0700Z.tif",
   "resolucion": "0.027 grados (aproximadamente 3 km)",
   "leyenda": {
-    "metodo": "Natural Breaks (Jenks)",
-    "categorias_solicitadas": 5,
-    "categorias": 5,
-    "titulo": "Distribucion relativa del pronostico",
-    "rangos": [
-      "Menor precipitacion relativa prevista",
-      "Precipitacion relativa intermedia baja",
-      "Precipitacion relativa intermedia",
-      "Precipitacion relativa intermedia alta",
-      "Mayor precipitacion relativa prevista"
-    ],
+    "tipo": "stretched",
+    "titulo": "Precipitación prevista",
     "colores": [
       "#2892c7",
-      "#a0c29b",
       "#fafa64",
-      "#fa8d34",
       "#e81014"
     ],
-    "nota": "Clases Jenks propias de esta fecha; no representan niveles de amenaza ni permiten comparar intensidades entre fechas."
+    "rangos": [
+      "Menor",
+      "Intermedia",
+      "Mayor"
+    ],
+    "uniforme": false,
+    "escala": "Lineal minimo-maximo por fecha; punto medio aritmetico."
   },
   "cantones": [
     {
