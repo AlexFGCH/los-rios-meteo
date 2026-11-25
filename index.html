@@ -69,6 +69,12 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
  let requestId=0,catalog={imerg:[],pdir:[]},lastState=null,sourceStates={};
  const rainLegend=L.control({position:'bottomleft'});
  rainLegend.onAdd=()=>{let d=L.DomUtil.create('div','legend');const legend=weatherData?.leyenda;
+ if(weatherData?.tipo==='pronostico'){
+  d.style.minWidth='200px';
+  d.innerHTML='<strong>Precipitación prevista</strong>'+(legend?.uniforme?'<div style="margin-top:8px"><i class="swatch" style="background:#2892c7"></i>Valor uniforme</div>':'<div style="height:15px;margin-top:8px;border-radius:3px;background:linear-gradient(to right,rgb(40,146,199) 0%,rgb(250,250,100) 50%,rgb(232,16,20) 100%)"></div><div style="display:flex;justify-content:space-between;font-size:11px"><span>Menor</span><span>Intermedia</span><span>Mayor</span></div>');
+  return d;
+ }
+
  if(!legend?.colores||!legend?.rangos){d.textContent='Actualizando simbología. Espera a que termine el flujo de GitHub.';return d;}
  d.innerHTML='<strong>'+esc(legend.titulo||'Acumulado estimado (mm)')+'</strong><br>'+esc(legend.metodo||'Clasificación')+' · '+Number(legend.categorias)+' categorías<br>'+legend.rangos.map((v,i)=>'<span class="swatch" style="background:'+(/^#[0-9a-f]{6}$/i.test(legend.colores[i])?legend.colores[i]:'#cccccc')+'"></span>'+esc(v)).join('<br>')+'<br>Sin color: fuera de cobertura o sin datos.<br>'+esc(legend.nota||'')+'<br>No son niveles de amenaza.';return d};
  function clearRain(){weatherData=null;if(rainLayer){map.removeLayer(rainLayer);rainLayer=null;}rainLegend.remove();}
