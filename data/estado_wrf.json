@@ -1,0 +1,12 @@
+{
+  "fuente": "WRF",
+  "estado": "completo",
+  "intento": "2026-11-25T16:23:42.425236-05:00",
+  "inicializacion": "2026-11-25T07:00:00+00:00",
+  "periodos": [
+    "20261125T0700Z_20261125T0700Z",
+    "20261125T0700Z_20261126T0700Z",
+    "20261125T0700Z_20261127T0700Z"
+  ],
+  "mensaje": "Pronostico diario; intervalo horario exacto pendiente de confirmar."
+}

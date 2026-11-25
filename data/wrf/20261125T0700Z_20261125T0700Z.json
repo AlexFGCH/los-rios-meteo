@@ -1,0 +1,621 @@
+{
+  "tipo": "pronostico",
+  "fuente": "WRF · servicio del visor INAMHI",
+  "fecha_fin": "2026-11-25",
+  "fecha_servicio": "2026-11-25T07:00:00.000Z",
+  "inicializacion": "2026-11-25T07:00:00.000Z",
+  "generado": "2026-11-25T16:22:56.862088-05:00",
+  "intervalos": 1,
+  "unidad": "mm",
+  "convencion_temporal": "Producto diario. Extremos horarios del acumulado pendientes de confirmar; TIME no se interpreta como inicio ni fin local.",
+  "bounds": [
+    [
+      -2.7913002774923177,
+      -80.6129066780822
+    ],
+    [
+      0.15169997828629955,
+      -78.34490297918451
+    ]
+  ],
+  "imagen": "data/wrf/20261125T0700Z_20261125T0700Z.png",
+  "raster": "data/wrf/20261125T0700Z_20261125T0700Z.tif",
+  "resolucion": "0.027 grados (aproximadamente 3 km)",
+  "leyenda": {
+    "metodo": "Natural Breaks (Jenks)",
+    "categorias_solicitadas": 5,
+    "categorias": 5,
+    "titulo": "Distribucion relativa del pronostico",
+    "rangos": [
+      "Menor precipitacion relativa prevista",
+      "Precipitacion relativa intermedia baja",
+      "Precipitacion relativa intermedia",
+      "Precipitacion relativa intermedia alta",
+      "Mayor precipitacion relativa prevista"
+    ],
+    "colores": [
+      "#2892c7",
+      "#a0c29b",
+      "#fafa64",
+      "#fa8d34",
+      "#e81014"
+    ],
+    "nota": "Clases Jenks propias de esta fecha; no representan niveles de amenaza ni permiten comparar intensidades entre fechas."
+  },
+  "cantones": [
+    {
+      "codigo": "0201",
+      "canton": "GUARANDA",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 40
+    },
+    {
+      "codigo": "0202",
+      "canton": "CHILLANES",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 16
+    },
+    {
+      "codigo": "0203",
+      "canton": "CHIMBO",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 32
+    },
+    {
+      "codigo": "0204",
+      "canton": "ECHEANDÍA",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 18
+    },
+    {
+      "codigo": "0205",
+      "canton": "SAN MIGUEL",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 34
+    },
+    {
+      "codigo": "0206",
+      "canton": "CALUMA",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 12
+    },
+    {
+      "codigo": "0207",
+      "canton": "LAS NAVES",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 20
+    },
+    {
+      "codigo": "0303",
+      "canton": "CAÑAR",
+      "provincia": "CAÑAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 39
+    },
+    {
+      "codigo": "0305",
+      "canton": "EL TAMBO",
+      "provincia": "CAÑAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 52
+    },
+    {
+      "codigo": "0307",
+      "canton": "SUSCAL",
+      "provincia": "CAÑAR",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 41
+    },
+    {
+      "codigo": "0502",
+      "canton": "LA MANÁ",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 19
+    },
+    {
+      "codigo": "0503",
+      "canton": "PANGUA",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 43
+    },
+    {
+      "codigo": "0504",
+      "canton": "PUJILÍ",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 48
+    },
+    {
+      "codigo": "0505",
+      "canton": "SALCEDO",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 61
+    },
+    {
+      "codigo": "0507",
+      "canton": "SIGCHOS",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 36
+    },
+    {
+      "codigo": "0601",
+      "canton": "RIOBAMBA",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 63
+    },
+    {
+      "codigo": "0602",
+      "canton": "ALAUSÍ",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 50
+    },
+    {
+      "codigo": "0603",
+      "canton": "COLTA",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 45
+    },
+    {
+      "codigo": "0604",
+      "canton": "CHAMBO",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 62
+    },
+    {
+      "codigo": "0605",
+      "canton": "CHUNCHI",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 51
+    },
+    {
+      "codigo": "0606",
+      "canton": "GUAMOTE",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 59
+    },
+    {
+      "codigo": "0607",
+      "canton": "GUANO",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 65
+    },
+    {
+      "codigo": "0608",
+      "canton": "PALLATANGA",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 55
+    },
+    {
+      "codigo": "0610",
+      "canton": "CUMANDÁ",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 33
+    },
+    {
+      "codigo": "0902",
+      "canton": "ALFREDO BAQUERIZO MORENO (JUJÁN)",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 25
+    },
+    {
+      "codigo": "0904",
+      "canton": "BALZAR",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 42
+    },
+    {
+      "codigo": "0905",
+      "canton": "COLIMES",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 37
+    },
+    {
+      "codigo": "0906",
+      "canton": "DAULE",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 7
+    },
+    {
+      "codigo": "0908",
+      "canton": "EL EMPALME",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 44
+    },
+    {
+      "codigo": "0909",
+      "canton": "EL TRIUNFO",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 11
+    },
+    {
+      "codigo": "0910",
+      "canton": "MILAGRO",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 29
+    },
+    {
+      "codigo": "0912",
+      "canton": "NARANJITO",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 30
+    },
+    {
+      "codigo": "0913",
+      "canton": "PALESTINA",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 31
+    },
+    {
+      "codigo": "0916",
+      "canton": "SAMBORONDÓN",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 9
+    },
+    {
+      "codigo": "0918",
+      "canton": "SANTA LUCÍA",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 35
+    },
+    {
+      "codigo": "0919",
+      "canton": "SALITRE",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 14
+    },
+    {
+      "codigo": "0920",
+      "canton": "SAN JACINTO DE YAGUACHI",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 22
+    },
+    {
+      "codigo": "0922",
+      "canton": "SIMÓN BOLÍVAR",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 17
+    },
+    {
+      "codigo": "0923",
+      "canton": "CORONEL MARCELINO MARIDUEÑA",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 26
+    },
+    {
+      "codigo": "0924",
+      "canton": "LOMAS DE SARGENTILLO",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 10
+    },
+    {
+      "codigo": "0925",
+      "canton": "NOBOL",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 13
+    },
+    {
+      "codigo": "0927",
+      "canton": "GENERAL  ANTONIO ELIZALDE",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 4
+    },
+    {
+      "codigo": "1201",
+      "canton": "BABAHOYO",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 23
+    },
+    {
+      "codigo": "1202",
+      "canton": "BABA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 3
+    },
+    {
+      "codigo": "1203",
+      "canton": "MONTALVO",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 27
+    },
+    {
+      "codigo": "1204",
+      "canton": "PUEBLOVIEJO",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 5
+    },
+    {
+      "codigo": "1205",
+      "canton": "QUEVEDO",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 47
+    },
+    {
+      "codigo": "1206",
+      "canton": "URDANETA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 1
+    },
+    {
+      "codigo": "1207",
+      "canton": "VENTANAS",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 2
+    },
+    {
+      "codigo": "1208",
+      "canton": "VINCES",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 8
+    },
+    {
+      "codigo": "1209",
+      "canton": "PALENQUE",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 15
+    },
+    {
+      "codigo": "1210",
+      "canton": "BUENA FE",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 24
+    },
+    {
+      "codigo": "1211",
+      "canton": "VALENCIA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 28
+    },
+    {
+      "codigo": "1212",
+      "canton": "MOCACHE",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 21
+    },
+    {
+      "codigo": "1213",
+      "canton": "QUINSALOMA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 38
+    },
+    {
+      "codigo": "1302",
+      "canton": "BOLÍVAR",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 58
+    },
+    {
+      "codigo": "1303",
+      "canton": "CHONE",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 53
+    },
+    {
+      "codigo": "1304",
+      "canton": "EL CARMEN",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 46
+    },
+    {
+      "codigo": "1305",
+      "canton": "FLAVIO ALFARO",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 56
+    },
+    {
+      "codigo": "1311",
+      "canton": "PICHINCHA",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 54
+    },
+    {
+      "codigo": "1313",
+      "canton": "SANTA ANA",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 57
+    },
+    {
+      "codigo": "1318",
+      "canton": "OLMEDO",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 49
+    },
+    {
+      "codigo": "1801",
+      "canton": "AMBATO",
+      "provincia": "TUNGURAHUA",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 64
+    },
+    {
+      "codigo": "1804",
+      "canton": "MOCHA",
+      "provincia": "TUNGURAHUA",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 68
+    },
+    {
+      "codigo": "1806",
+      "canton": "QUERO",
+      "provincia": "TUNGURAHUA",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 67
+    },
+    {
+      "codigo": "1809",
+      "canton": "TISALEO",
+      "provincia": "TUNGURAHUA",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 66
+    },
+    {
+      "codigo": "2301",
+      "canton": "SANTO DOMINGO",
+      "provincia": "SANTO DOMINGO DE LOS TSÁCHILAS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 6
+    },
+    {
+      "codigo": "9006",
+      "canton": "ZONA EN ESTUDIO: JUVAL (CAÑAR-CHIMBORAZO)",
+      "provincia": "ZONA EN ESTUDIO: JUVAL (CAÑAR-CHIMBORAZO)",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 60
+    }
+  ],
+  "destacados": [
+    {
+      "codigo": "1206",
+      "canton": "URDANETA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 1
+    },
+    {
+      "codigo": "1207",
+      "canton": "VENTANAS",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 2
+    },
+    {
+      "codigo": "1202",
+      "canton": "BABA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "cobertura_completa": true,
+      "posicion_relativa": 3
+    }
+  ],
+  "criterio_destacados": "Mayor media territorial ponderada por area; solo cantones con cobertura completa y lluvia prevista positiva. Incluye empates.",
+  "originales": [
+    "https://services.geoglows.org/geoserver/wrf/wcs?service=WCS&version=1.0.0&request=GetCoverage&coverage=wrf%3Awrf_precipitation_daily&crs=EPSG%3A4326&bbox=-81.09890747070312%2C-5.032300472259522%2C-75.18589782714844%2C1.474700093269348&width=219&height=241&format=GeoTIFF&time=2026-11-25T07%3A00%3A00.000Z&dim_initd=2026-11-25T07%3A00%3A00.000Z"
+  ]
+}
