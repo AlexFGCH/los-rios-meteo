@@ -1,37 +1,49 @@
 name: Actualizar monitor de lluvia
+
 on:
   workflow_dispatch:
   push:
     branches: [main]
   schedule:
-    # Ecuador UTC-5: 11:17, 12:17, 13:17, 14:17, 15:17 y 16:17.
     - cron: '17 16-21 * * *'
+
 permissions:
   contents: write
+  actions: read
   pages: write
   id-token: write
+
 concurrency:
   group: monitor-pages
   cancel-in-progress: false
+
 jobs:
   actualizar:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: pip
+
       - name: Instalar dependencias
         run: python -m pip install -r requirements.txt
+
       - name: Descargar y calcular IMERG
         env:
           NASA_PPS_EMAIL: ${{ secrets.NASA_PPS_EMAIL }}
         run: python scripts/actualizar_imerg.py
+
       - name: Guardar resultados completos y estado
         run: |
           git config user.name 'github-actions[bot]'
@@ -41,15 +53,44 @@ jobs:
             git commit -m 'Actualizar precipitacion y estado de descarga'
             git push
           fi
+
       - name: Preparar pagina publica
         run: |
           mkdir -p dist
           cp index.html dist/
           cp -R data dist/
+          test -s dist/index.html
+          test -s dist/data/catalogo.json
+
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v4
+
+      - name: Subir paquete de la pagina
+        uses: actions/upload-pages-artifact@v4
         with:
+          name: github-pages
           path: dist
+
+      - name: Verificar paquete antes de publicar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          for intento in 1 2 3 4 5 6; do
+            cantidad=$(gh api \
+              "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" \
+              --jq '[.artifacts[] | select(.name == "github-pages" and .expired == false)] | length')
+            if [ "$cantidad" -eq 1 ]; then
+              echo "Paquete github-pages disponible."
+              exit 0
+            fi
+            echo "Paquete aun no visible. Comprobacion $intento de 6."
+            sleep 10
+          done
+          echo "::error::La API no encontro el paquete despues de la subida."
+          exit 1
+
       - name: Publicar monitor
         id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
+        with:
+          artifact_name: github-pages
