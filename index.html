@@ -76,7 +76,7 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
  }
 
  if(!legend?.colores||!legend?.rangos){d.textContent='Actualizando simbología. Espera a que termine el flujo de GitHub.';return d;}
- d.innerHTML='<strong>'+esc(legend.titulo||'Acumulado estimado (mm)')+'</strong><br>'+esc(legend.metodo||'Clasificación')+' · '+Number(legend.categorias)+' categorías<br>'+legend.rangos.map((v,i)=>'<span class="swatch" style="background:'+(/^#[0-9a-f]{6}$/i.test(legend.colores[i])?legend.colores[i]:'#cccccc')+'"></span>'+esc(v)).join('<br>')+'<br>Sin color: fuera de cobertura o sin datos.<br>'+esc(legend.nota||'')+'<br>No son niveles de amenaza.';return d};
+ d.innerHTML='<strong>'+esc(legend.titulo||'Acumulado estimado (mm)')+'</strong><br>'+legend.rangos.map((v,i)=>'<span class="swatch" style="background:'+(/^#[0-9a-f]{6}$/i.test(legend.colores[i])?legend.colores[i]:'#cccccc')+'"></span>'+esc(v)).join('<br>')+'<br>Sin color: fuera de cobertura o sin datos.<br>'+esc(legend.nota||'')+'<br>No son niveles de amenaza.';return d};
  function clearRain(){weatherData=null;if(rainLayer){map.removeLayer(rainLayer);rainLayer=null;}rainLegend.remove();}
  async function loadRain(){
   const token=++requestId;clearRain();
