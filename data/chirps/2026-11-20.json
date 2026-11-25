@@ -1,0 +1,741 @@
+{
+  "fuente": "CHIRPS v3 SAT preliminar",
+  "fecha_fin": "2026-11-20",
+  "fecha_producto": "2026-11-20",
+  "estado_producto": "preliminar",
+  "convencion_temporal": "Etiqueta diaria UTC de desagregacion; no equivale a 07h00-07h00 Ecuador.",
+  "inicio": "2026-11-20T00:00:00+00:00",
+  "fin": "2026-11-21T00:00:00+00:00",
+  "generado": "2026-11-25T15:43:07.609808-05:00",
+  "intervalos": 1,
+  "unidad": "mm",
+  "bounds": [
+    [
+      -2.800000935792923,
+      -80.59999851882458
+    ],
+    [
+      0.14999910816550255,
+      -78.2999984845519
+    ]
+  ],
+  "imagen": "data/chirps/2026-11-20.png",
+  "raster": "data/chirps/2026-11-20.tif",
+  "resolucion": "0.05 grados (aprox. 5.5 km); desagregacion diaria con IMERG Late",
+  "metodo_media": "Ponderada por area de interseccion con celdas nativas; solo cobertura completa.",
+  "metodo_maxima": "Mayor acumulado entre celdas nativas con interseccion de area positiva.",
+  "leyenda": {
+    "metodo": "Natural Breaks (Jenks)",
+    "categorias_solicitadas": 5,
+    "categorias": 5,
+    "titulo": "Acumulado estimado (mm). Jenks por raster; no son niveles de amenaza INAMHI.",
+    "rangos": [
+      "0.08–11.41",
+      ">11.41–23.25",
+      ">23.25–34.98",
+      ">34.98–48.72",
+      ">48.72–85.77"
+    ],
+    "limites": [
+      0.076,
+      11.406,
+      23.249,
+      34.982,
+      48.715,
+      85.766
+    ],
+    "colores": [
+      "#2892c7",
+      "#a0c29b",
+      "#fafa64",
+      "#fa8d34",
+      "#e81014"
+    ],
+    "nota": "Los rangos cambian segun el periodo."
+  },
+  "cantones": [
+    {
+      "codigo": "0201",
+      "canton": "GUARANDA",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "media_mm": 36.34,
+      "maxima_mm": 54.84,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 86
+    },
+    {
+      "codigo": "0202",
+      "canton": "CHILLANES",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "media_mm": 27.8,
+      "maxima_mm": 41.12,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 34
+    },
+    {
+      "codigo": "0203",
+      "canton": "CHIMBO",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "media_mm": 28.25,
+      "maxima_mm": 38.44,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 19
+    },
+    {
+      "codigo": "0204",
+      "canton": "ECHEANDÍA",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "media_mm": 39.78,
+      "maxima_mm": 46.25,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 17
+    },
+    {
+      "codigo": "0205",
+      "canton": "SAN MIGUEL",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "media_mm": 21.08,
+      "maxima_mm": 40.78,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 33
+    },
+    {
+      "codigo": "0206",
+      "canton": "CALUMA",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "media_mm": 33.37,
+      "maxima_mm": 38.44,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 16
+    },
+    {
+      "codigo": "0207",
+      "canton": "LAS NAVES",
+      "provincia": "BOLÍVAR",
+      "anio": "2025",
+      "media_mm": 46.3,
+      "maxima_mm": 50.36,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 12
+    },
+    {
+      "codigo": "0303",
+      "canton": "CAÑAR",
+      "provincia": "CAÑAR",
+      "anio": "2025",
+      "media_mm": 7.63,
+      "maxima_mm": 38.24,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 94
+    },
+    {
+      "codigo": "0305",
+      "canton": "EL TAMBO",
+      "provincia": "CAÑAR",
+      "anio": "2025",
+      "media_mm": 2.41,
+      "maxima_mm": 4.35,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 7
+    },
+    {
+      "codigo": "0307",
+      "canton": "SUSCAL",
+      "provincia": "CAÑAR",
+      "anio": "2025",
+      "media_mm": 6.27,
+      "maxima_mm": 9.76,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 6
+    },
+    {
+      "codigo": "0502",
+      "canton": "LA MANÁ",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "media_mm": 29.38,
+      "maxima_mm": 58.91,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 38
+    },
+    {
+      "codigo": "0503",
+      "canton": "PANGUA",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "media_mm": 35.28,
+      "maxima_mm": 47.77,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 42
+    },
+    {
+      "codigo": "0504",
+      "canton": "PUJILÍ",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "media_mm": 24.34,
+      "maxima_mm": 40.92,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 67
+    },
+    {
+      "codigo": "0505",
+      "canton": "SALCEDO",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "media_mm": 10.58,
+      "maxima_mm": 21.02,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 32
+    },
+    {
+      "codigo": "0507",
+      "canton": "SIGCHOS",
+      "provincia": "COTOPAXI",
+      "anio": "2025",
+      "media_mm": 30.1,
+      "maxima_mm": 47.17,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 68
+    },
+    {
+      "codigo": "0601",
+      "canton": "RIOBAMBA",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "media_mm": 6.88,
+      "maxima_mm": 28.03,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 63
+    },
+    {
+      "codigo": "0602",
+      "canton": "ALAUSÍ",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "media_mm": 7.18,
+      "maxima_mm": 28.18,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 61
+    },
+    {
+      "codigo": "0603",
+      "canton": "COLTA",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "media_mm": 6.81,
+      "maxima_mm": 16.72,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 42
+    },
+    {
+      "codigo": "0604",
+      "canton": "CHAMBO",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "media_mm": 4.6,
+      "maxima_mm": 7.81,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 15
+    },
+    {
+      "codigo": "0605",
+      "canton": "CHUNCHI",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "media_mm": 6.26,
+      "maxima_mm": 12.93,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 19
+    },
+    {
+      "codigo": "0606",
+      "canton": "GUAMOTE",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "media_mm": 3.98,
+      "maxima_mm": 8.71,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 62
+    },
+    {
+      "codigo": "0607",
+      "canton": "GUANO",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "media_mm": 9.37,
+      "maxima_mm": 29.68,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 29
+    },
+    {
+      "codigo": "0608",
+      "canton": "PALLATANGA",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "media_mm": 10.98,
+      "maxima_mm": 18.73,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 23
+    },
+    {
+      "codigo": "0610",
+      "canton": "CUMANDÁ",
+      "provincia": "CHIMBORAZO",
+      "anio": "2025",
+      "media_mm": 29.62,
+      "maxima_mm": 44.91,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 18
+    },
+    {
+      "codigo": "0902",
+      "canton": "ALFREDO BAQUERIZO MORENO (JUJÁN)",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 12.05,
+      "maxima_mm": 29.31,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 17
+    },
+    {
+      "codigo": "0904",
+      "canton": "BALZAR",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 34.66,
+      "maxima_mm": 51.12,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 62
+    },
+    {
+      "codigo": "0905",
+      "canton": "COLIMES",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 32.97,
+      "maxima_mm": 58.07,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 39
+    },
+    {
+      "codigo": "0906",
+      "canton": "DAULE",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 12.75,
+      "maxima_mm": 28.22,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 32
+    },
+    {
+      "codigo": "0908",
+      "canton": "EL EMPALME",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 36.81,
+      "maxima_mm": 53.7,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 37
+    },
+    {
+      "codigo": "0909",
+      "canton": "EL TRIUNFO",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 22.2,
+      "maxima_mm": 38.24,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 36
+    },
+    {
+      "codigo": "0910",
+      "canton": "MILAGRO",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 7.48,
+      "maxima_mm": 20.35,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 25
+    },
+    {
+      "codigo": "0912",
+      "canton": "NARANJITO",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 20.37,
+      "maxima_mm": 34.61,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 16
+    },
+    {
+      "codigo": "0913",
+      "canton": "PALESTINA",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 26.19,
+      "maxima_mm": 29.25,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 13
+    },
+    {
+      "codigo": "0916",
+      "canton": "SAMBORONDÓN",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 4.91,
+      "maxima_mm": 16.04,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 22
+    },
+    {
+      "codigo": "0918",
+      "canton": "SANTA LUCÍA",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 23.81,
+      "maxima_mm": 33.69,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 24
+    },
+    {
+      "codigo": "0919",
+      "canton": "SALITRE",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 21.37,
+      "maxima_mm": 32.73,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 27
+    },
+    {
+      "codigo": "0920",
+      "canton": "SAN JACINTO DE YAGUACHI",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 5.44,
+      "maxima_mm": 19.04,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 36
+    },
+    {
+      "codigo": "0922",
+      "canton": "SIMÓN BOLÍVAR",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 18.82,
+      "maxima_mm": 34.61,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 22
+    },
+    {
+      "codigo": "0923",
+      "canton": "CORONEL MARCELINO MARIDUEÑA",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 22.23,
+      "maxima_mm": 38.6,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 18
+    },
+    {
+      "codigo": "0924",
+      "canton": "LOMAS DE SARGENTILLO",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 15.24,
+      "maxima_mm": 17.55,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 8
+    },
+    {
+      "codigo": "0925",
+      "canton": "NOBOL",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 10.57,
+      "maxima_mm": 18.5,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 15
+    },
+    {
+      "codigo": "0927",
+      "canton": "GENERAL  ANTONIO ELIZALDE",
+      "provincia": "GUAYAS",
+      "anio": "2025",
+      "media_mm": 38.92,
+      "maxima_mm": 44.91,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 10
+    },
+    {
+      "codigo": "1201",
+      "canton": "BABAHOYO",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 32.19,
+      "maxima_mm": 53.16,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 61
+    },
+    {
+      "codigo": "1202",
+      "canton": "BABA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 28.43,
+      "maxima_mm": 47.34,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 34
+    },
+    {
+      "codigo": "1203",
+      "canton": "MONTALVO",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 39.06,
+      "maxima_mm": 45.29,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 25
+    },
+    {
+      "codigo": "1204",
+      "canton": "PUEBLOVIEJO",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 41.7,
+      "maxima_mm": 53.16,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 24
+    },
+    {
+      "codigo": "1205",
+      "canton": "QUEVEDO",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 46.38,
+      "maxima_mm": 65.19,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 24
+    },
+    {
+      "codigo": "1206",
+      "canton": "URDANETA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 37.13,
+      "maxima_mm": 53.16,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 26
+    },
+    {
+      "codigo": "1207",
+      "canton": "VENTANAS",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 41.86,
+      "maxima_mm": 50.36,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 36
+    },
+    {
+      "codigo": "1208",
+      "canton": "VINCES",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 40.15,
+      "maxima_mm": 51.02,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 42
+    },
+    {
+      "codigo": "1209",
+      "canton": "PALENQUE",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 41.92,
+      "maxima_mm": 50.49,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 33
+    },
+    {
+      "codigo": "1210",
+      "canton": "BUENA FE",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 43.94,
+      "maxima_mm": 63.86,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 40
+    },
+    {
+      "codigo": "1211",
+      "canton": "VALENCIA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 55.0,
+      "maxima_mm": 85.77,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 52
+    },
+    {
+      "codigo": "1212",
+      "canton": "MOCACHE",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 42.7,
+      "maxima_mm": 53.7,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 33
+    },
+    {
+      "codigo": "1213",
+      "canton": "QUINSALOMA",
+      "provincia": "LOS RÍOS",
+      "anio": "2025",
+      "media_mm": 44.07,
+      "maxima_mm": 65.19,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 22
+    },
+    {
+      "codigo": "1302",
+      "canton": "BOLÍVAR",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "media_mm": 32.3,
+      "maxima_mm": 46.93,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 33
+    },
+    {
+      "codigo": "1303",
+      "canton": "CHONE",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "media_mm": 25.04,
+      "maxima_mm": 47.17,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 153
+    },
+    {
+      "codigo": "1304",
+      "canton": "EL CARMEN",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "media_mm": 17.68,
+      "maxima_mm": 48.11,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 85
+    },
+    {
+      "codigo": "1305",
+      "canton": "FLAVIO ALFARO",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "media_mm": 17.4,
+      "maxima_mm": 26.9,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 64
+    },
+    {
+      "codigo": "1311",
+      "canton": "PICHINCHA",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "media_mm": 26.39,
+      "maxima_mm": 44.24,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 56
+    },
+    {
+      "codigo": "1313",
+      "canton": "SANTA ANA",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "media_mm": 37.5,
+      "maxima_mm": 49.74,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 53
+    },
+    {
+      "codigo": "1318",
+      "canton": "OLMEDO",
+      "provincia": "MANABÍ",
+      "anio": "2025",
+      "media_mm": 45.6,
+      "maxima_mm": 58.07,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 21
+    },
+    {
+      "codigo": "1801",
+      "canton": "AMBATO",
+      "provincia": "TUNGURAHUA",
+      "anio": "2025",
+      "media_mm": 24.73,
+      "maxima_mm": 37.2,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 48
+    },
+    {
+      "codigo": "1804",
+      "canton": "MOCHA",
+      "provincia": "TUNGURAHUA",
+      "anio": "2025",
+      "media_mm": 20.67,
+      "maxima_mm": 26.14,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 9
+    },
+    {
+      "codigo": "1806",
+      "canton": "QUERO",
+      "provincia": "TUNGURAHUA",
+      "anio": "2025",
+      "media_mm": 13.55,
+      "maxima_mm": 20.55,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 12
+    },
+    {
+      "codigo": "1809",
+      "canton": "TISALEO",
+      "provincia": "TUNGURAHUA",
+      "anio": "2025",
+      "media_mm": 21.33,
+      "maxima_mm": 31.68,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 9
+    },
+    {
+      "codigo": "2301",
+      "canton": "SANTO DOMINGO",
+      "provincia": "SANTO DOMINGO DE LOS TSÁCHILAS",
+      "anio": "2025",
+      "media_mm": 43.27,
+      "maxima_mm": 67.99,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 149
+    },
+    {
+      "codigo": "9006",
+      "canton": "ZONA EN ESTUDIO: JUVAL (CAÑAR-CHIMBORAZO)",
+      "provincia": "ZONA EN ESTUDIO: JUVAL (CAÑAR-CHIMBORAZO)",
+      "anio": "2025",
+      "media_mm": 0.66,
+      "maxima_mm": 3.1,
+      "cobertura_valida_pct": 100.0,
+      "celdas": 33
+    }
+  ],
+  "originales": [
+    "https://data.chc.ucsb.edu/products/CHIRPS/v3.0/daily/prelim/sat/2026/chirps-v3.0.prelim.2026.11.20.tif"
+  ]
+}
