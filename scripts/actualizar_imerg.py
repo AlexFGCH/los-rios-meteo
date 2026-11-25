@@ -2,6 +2,7 @@
 Credencial solo desde NASA_PPS_EMAIL. Nunca se publica el correo.
 """
 import os,json,re,math,time,gzip
+import jenkspy
 from datetime import datetime,timedelta,timezone
 from pathlib import Path
 from html.parser import HTMLParser
@@ -45,6 +46,42 @@ def find_files(html,url):
 def save_json(path,value):
     path.parent.mkdir(parents=True,exist_ok=True)
     temp=path.with_suffix('.tmp');temp.write_text(json.dumps(value,ensure_ascii=False,allow_nan=False,indent=2),encoding='utf-8');temp.replace(path)
+
+PALETA = [(40,146,199),(160,194,155),(250,250,100),(250,141,52),(232,16,20)]
+
+def dibujar_jenks(values,valid,path):
+    # Jenks sobre todos los pixeles validos del raster recortado, no por canton.
+    sample=np.round(values[valid].astype('float64'),3)
+    if not sample.size:raise RuntimeError('No hay valores validos para clasificar.')
+    count=min(5,len(np.unique(sample)))
+    breaks=[float(x) for x in jenkspy.jenks_breaks(sample,n_classes=count)]
+    # Si hay menos de cinco valores distintos, no inventar clases vacias.
+    positions=np.round(np.linspace(0,4,count)).astype(int) if count>1 else np.array([0])
+    colors=[PALETA[i] for i in positions]
+    classified=np.searchsorted(breaks[1:-1],np.round(values,3),side='left')
+    rgba=np.zeros(values.shape+(4,),dtype='uint8')
+    for i,rgb in enumerate(colors):rgba[(classified==i)&valid]=(*rgb,255)
+    Image.fromarray(rgba).save(path)
+    labels=[]
+    for i in range(count):
+        lo,hi=breaks[i:i+2]
+        labels.append(f'{lo:.2f}–{hi:.2f}' if i==0 else f'>{lo:.2f}–{hi:.2f}')
+    return {'metodo':'Natural Breaks (Jenks)','categorias_solicitadas':5,'categorias':count,
+        'titulo':'Acumulado estimado (mm). Jenks por raster; no son niveles de amenaza INAMHI.',
+        'rangos':labels,'limites':breaks,'colores':['#%02x%02x%02x'%c for c in colors],
+        'nota':'Los rangos cambian segun el periodo.' if count==5 else 'Menos de cinco valores distintos: se muestran solo las clases posibles.'}
+
+def actualizar_guardado(folder,day):
+    jsonpath=folder/(day+'.json');tif=folder/(day+'.tif')
+    if not tif.exists():raise RuntimeError('Falta el TIFF guardado; no se puede reclasificar este periodo.')
+    result=json.loads(jsonpath.read_text())
+    with rasterio.open(tif) as src:
+        values=src.read(1);valid=src.read_masks(1)>0
+        valid &= np.isfinite(values)&(values>=0)
+    result['leyenda']=dibujar_jenks(values,valid,folder/(day+'.png'))
+    result['simbologia_actualizada']=datetime.now(LOCAL).isoformat()
+    save_json(jsonpath,result)
+
 def main():
     now=datetime.now(LOCAL);day=os.environ.get('FECHA_FIN','').strip() or now.date().isoformat()
     start,end,slots=period(day)
@@ -52,7 +89,8 @@ def main():
     data=ROOT/'data';folder=data/'imerg';folder.mkdir(parents=True,exist_ok=True)
     status={'fuente':'NASA GPM IMERG Early','intento':now.isoformat(),'fecha_fin_solicitada':day}
     if (folder/(day+'.json')).exists():
-        status.update(estado='completo',mensaje='Periodo ya procesado.');save_json(data/'estado.json',status);return
+        actualizar_guardado(folder,day)
+        status.update(estado='completo',mensaje='Periodo completo; simbologia Jenks actualizada.');save_json(data/'estado.json',status);return
     email=os.environ.get('NASA_PPS_EMAIL','').strip().lower()
     if '@' not in email:raise RuntimeError('Falta el secreto NASA_PPS_EMAIL.')
     session=requests.Session();session.auth=(email,email)
@@ -129,21 +167,17 @@ def main():
         stats.append({**f['properties'],'media_mm':round(numerator/denominator,2) if denominator and coverage>=.999 else None,
             'maxima_mm':round(maxval,2) if maxval is not None and coverage>=.999 else None,
             'cobertura_valida_pct':round(100*coverage,2),'celdas':count})
-    colors=np.array([[226,239,250,170],[125,197,220,185],[65,163,130,195],[248,204,76,210],[239,132,57,220],[180,42,47,225]],dtype='uint8')
-    classes=np.digitize(total,[1,10,25,50,100]);rgba=colors[classes];rgba[~display]=0
-    Image.fromarray(rgba).save(folder/(day+'.png'))
+    legend=dibujar_jenks(total,display,folder/(day+'.png'))
     left,top=grid*(0,0);right,bottom=grid*(total.shape[1],total.shape[0])
     result={'fuente':'NASA GPM IMERG Early','fecha_fin':day,'inicio':start.isoformat(),'fin':end.isoformat(),
         'generado':now.isoformat(),'intervalos':48,'unidad':'mm','bounds':[[bottom,left],[top,right]],
         'imagen':f'data/imerg/{day}.png','raster':f'data/imerg/{day}.tif',
         'resolucion':'0.1 grados (aprox. 11 km)','metodo_media':'Ponderada por area de interseccion con celdas nativas; solo cobertura completa.',
         'metodo_maxima':'Mayor acumulado entre celdas nativas con interseccion de area positiva.',
-        'leyenda':{'titulo':'Acumulado estimado (mm), cortes de visualizacion propios; no son niveles de amenaza INAMHI.',
-                   'rangos':['0–<1','1–<10','10–<25','25–<50','50–<100','≥100']},'cantones':stats,'originales':source_names}
+        'leyenda':legend,'cantones':stats,'originales':source_names}
     save_json(folder/(day+'.json'),result)
     days=sorted((p.stem for p in folder.glob('????-??-??.json')),reverse=True)
     save_json(data/'catalogo.json',{'imerg':days})
     status.update(estado='completo',mensaje='48 intervalos procesados.',fecha_fin=day);save_json(data/'estado.json',status)
     print('LISTO: acumulado y estadisticas generados.')
 if __name__=='__main__':main()
-
