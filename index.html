@@ -80,7 +80,7 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
    const response=await fetch('data/imerg/'+encodeURIComponent(day)+'.json',{cache:'no-store'});if(!response.ok)throw Error();
    const d=await response.json();if(token!==requestId)return;
    if(d.intervalos!==48||d.unidad!=='mm')throw Error();weatherData=d;
-   rainLayer=L.imageOverlay(d.imagen,d.bounds,{pane:'rain',opacity:1,interactive:false}).addTo(map);
+   rainLayer=L.imageOverlay(d.imagen,d.bounds,{pane:'rain',opacity:0.85,interactive:false}).addTo(map);
    rainLayer.on('error',()=>{if(token===requestId)status.textContent='No pudo cargarse la imagen del acumulado. Revisa la publicación.'});rainLegend.addTo(map);
    status.textContent=d.fuente+' · '+d.inicio.slice(0,10)+' 07h00 a '+d.fin.slice(0,10)+' 07h00 Ecuador · 48 intervalos completos. Procesado: '+d.generado.slice(0,16).replace('T',' ')+' (UTC-5).'+(lastState?.estado==='pendiente'?' Último intento: '+lastState.mensaje:'');
   }catch(e){if(token===requestId){clearRain();status.textContent='No se pudo cargar el acumulado seleccionado. No se mostrarán valores de ejemplo.';}}
