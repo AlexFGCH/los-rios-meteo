@@ -1,42 +1,51 @@
 name: Actualizar monitor de lluvia
+
 on:
   workflow_dispatch:
   push:
     branches: [main]
   schedule:
-    # Ecuador UTC-5: 11:17 hasta 16:17; luego 18:17 y 20:17.
     - cron: '17 16-21,23 * * *'
     - cron: '17 1 * * *'
+
 permissions:
   contents: write
   actions: read
   pages: write
   id-token: write
+
 concurrency:
   group: monitor-pages
   cancel-in-progress: false
+
 jobs:
   actualizar:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: pip
+
       - name: Instalar dependencias
         run: python -m pip install -r requirements.txt
-      - name: Actualizar IMERG y PDIR-Now
+
+      - name: Actualizar fuentes de precipitacion
         env:
           NASA_PPS_EMAIL: ${{ secrets.NASA_PPS_EMAIL }}
         run: python -u scripts/actualizar_fuentes.py
-      - name: Guardar resultados completos y estado
+
+      - name: Guardar resultados
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -45,55 +54,56 @@ jobs:
             git commit -m 'Actualizar precipitacion y estado de descarga'
             git push
           fi
-      - name: Preparar pagina publica
+
+      - name: Preparar pagina
         run: |
           mkdir -p dist
           cp index.html dist/
           cp -R data dist/
           test -s dist/index.html
           test -s dist/data/catalogo.json
+
       - uses: actions/configure-pages@v5
-      - name: Subir paquete de la pagina
+
+      - name: Subir paquete
         uses: actions/upload-pages-artifact@v4
         with:
           name: github-pages
           path: dist
-      - name: Verificar paquete antes de publicar
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          for intento in 1 2 3 4 5 6; do
-            cantidad=$(gh api \
-              "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" \
-              --jq '[.artifacts[] | select(.name == "github-pages" and .expired == false)] | length')
-            if [ "$cantidad" -eq 1 ]; then
-              echo "Paquete github-pages disponible."
-              exit 0
-            fi
-            echo "Paquete aun no visible. Comprobacion $intento de 6."
-            sleep 10
-          done
-          echo "::error::La API no encontro el paquete despues de la subida."
-          exit 1
-          - name: Publicar monitor
+
+      - name: Publicar monitor
         id: deploy
         uses: actions/github-script@v8
         with:
           script: |
             const repo = context.repo;
-            const response = await github.rest.actions.listWorkflowRunArtifacts({
-              ...repo,
-              run_id: context.runId,
-              per_page: 100
-            });
+            let artifact;
 
-            const artifacts = response.data.artifacts.filter(
-              a => a.name === 'github-pages' && !a.expired
-            );
+            for (let i = 0; i < 6; i++) {
+              const response = await github.rest.actions.listWorkflowRunArtifacts({
+                ...repo,
+                run_id: context.runId,
+                per_page: 100
+              });
 
-            if (artifacts.length !== 1) {
-              throw new Error('No se encontro un unico paquete github-pages.');
+              const matches = response.data.artifacts.filter(
+                a => a.name === 'github-pages' && !a.expired
+              );
+
+              if (matches.length > 1) {
+                throw new Error('Hay varios paquetes github-pages.');
+              }
+
+              if (matches.length === 1) {
+                artifact = matches[0];
+                break;
+              }
+
+              await new Promise(r => setTimeout(r, 10000));
+            }
+
+            if (!artifact) {
+              throw new Error('No se encontro el paquete github-pages.');
             }
 
             const token = await core.getIDToken();
@@ -103,7 +113,7 @@ jobs:
               'POST /repos/{owner}/{repo}/pages/deployments',
               {
                 ...repo,
-                artifact_id: artifacts[0].id,
+                artifact_id: artifact.id,
                 pages_build_version: context.sha,
                 oidc_token: token
               }
@@ -118,8 +128,15 @@ jobs:
 
             core.setOutput('page_url', deployment.data.page_url);
 
-            for (let intento = 0; intento < 36; intento++) {
-              await new Promise(resolve => setTimeout(resolve, 10000));
+            const failures = [
+              'deployment_failed',
+              'deployment_content_failed',
+              'deployment_cancelled',
+              'deployment_lost'
+            ];
+
+            for (let i = 0; i < 36; i++) {
+              await new Promise(r => setTimeout(r, 10000));
 
               const result = await github.request(
                 'GET /repos/{owner}/{repo}/pages/deployments/{deployment_id}',
@@ -127,21 +144,16 @@ jobs:
               );
 
               const status = result.data.status;
-              core.info('Estado de publicacion: ' + status);
+              core.info('Estado: ' + status);
 
               if (status === 'succeed') {
                 core.info('Monitor publicado correctamente.');
                 return;
               }
 
-              if ([
-                'deployment_failed',
-                'deployment_content_failed',
-                'deployment_cancelled',
-                'deployment_lost'
-              ].includes(status)) {
-                throw new Error('La publicacion termino con estado: ' + status);
+              if (failures.includes(status)) {
+                throw new Error('Publicacion fallida: ' + status);
               }
             }
 
-            throw new Error('La publicacion no confirmo su finalizacion en seis minutos.');
+            throw new Error('GitHub no confirmo la publicacion en seis minutos.');
