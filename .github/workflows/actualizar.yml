@@ -76,9 +76,72 @@ jobs:
           done
           echo "::error::La API no encontro el paquete despues de la subida."
           exit 1
-      - name: Publicar monitor
+          - name: Publicar monitor
         id: deploy
-        uses: actions/deploy-pages@v5
+        uses: actions/github-script@v8
         with:
-          artifact_name: github-pages
+          script: |
+            const repo = context.repo;
+            const response = await github.rest.actions.listWorkflowRunArtifacts({
+              ...repo,
+              run_id: context.runId,
+              per_page: 100
+            });
 
+            const artifacts = response.data.artifacts.filter(
+              a => a.name === 'github-pages' && !a.expired
+            );
+
+            if (artifacts.length !== 1) {
+              throw new Error('No se encontro un unico paquete github-pages.');
+            }
+
+            const token = await core.getIDToken();
+            core.setSecret(token);
+
+            const deployment = await github.request(
+              'POST /repos/{owner}/{repo}/pages/deployments',
+              {
+                ...repo,
+                artifact_id: artifacts[0].id,
+                pages_build_version: context.sha,
+                oidc_token: token
+              }
+            );
+
+            const id = deployment.data.id ||
+              deployment.data.status_url?.split('/').pop();
+
+            if (!id) {
+              throw new Error('GitHub no devolvio el identificador de publicacion.');
+            }
+
+            core.setOutput('page_url', deployment.data.page_url);
+
+            for (let intento = 0; intento < 36; intento++) {
+              await new Promise(resolve => setTimeout(resolve, 10000));
+
+              const result = await github.request(
+                'GET /repos/{owner}/{repo}/pages/deployments/{deployment_id}',
+                { ...repo, deployment_id: id }
+              );
+
+              const status = result.data.status;
+              core.info('Estado de publicacion: ' + status);
+
+              if (status === 'succeed') {
+                core.info('Monitor publicado correctamente.');
+                return;
+              }
+
+              if ([
+                'deployment_failed',
+                'deployment_content_failed',
+                'deployment_cancelled',
+                'deployment_lost'
+              ].includes(status)) {
+                throw new Error('La publicacion termino con estado: ' + status);
+              }
+            }
+
+            throw new Error('La publicacion no confirmo su finalizacion en seis minutos.');
