@@ -101,9 +101,9 @@ def dibujar_stretched(values,valid,path):
     # Rampa lineal minimo-maximo; punto central en (minimo+maximo)/2.
     sample=values[valid]
     if not sample.size:raise RuntimeError('Sin valores validos para la rampa.')
-    media = float(sample.mean())
-desviacion = float(sample.std())
-low, high = media - 1.5 * desviacion, media + 1.5 * desviacion
+        media = float(sample.mean())
+    desviacion = float(sample.std())
+    low, high = media - 1.5 * desviacion, media + 1.5 * desviacion
     fraction=np.zeros(values.shape,dtype='float64')
     if high>low:fraction[valid]=(values[valid]-low)/(high-low)
     anchors=np.array([[40,146,199],[250,250,100],[232,16,20]],dtype='float64')
