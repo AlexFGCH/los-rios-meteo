@@ -1,8 +1,7 @@
 {
   "fuente": "NASA GPM IMERG Early",
-  "intento": "2026-11-25T14:32:05.790672-05:00",
+  "intento": "2026-11-25T14:50:50.728913-05:00",
   "fecha_fin_solicitada": "2026-11-25",
   "estado": "completo",
-  "mensaje": "48 intervalos procesados.",
-  "fecha_fin": "2026-11-25"
+  "mensaje": "Periodo completo; simbologia Jenks actualizada."
 }

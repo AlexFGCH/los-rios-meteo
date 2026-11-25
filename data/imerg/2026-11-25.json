@@ -22,15 +22,33 @@
   "metodo_media": "Ponderada por area de interseccion con celdas nativas; solo cobertura completa.",
   "metodo_maxima": "Mayor acumulado entre celdas nativas con interseccion de area positiva.",
   "leyenda": {
-    "titulo": "Acumulado estimado (mm), cortes de visualizacion propios; no son niveles de amenaza INAMHI.",
+    "metodo": "Natural Breaks (Jenks)",
+    "categorias_solicitadas": 5,
+    "categorias": 5,
+    "titulo": "Acumulado estimado (mm). Jenks por raster; no son niveles de amenaza INAMHI.",
     "rangos": [
-      "0–<1",
-      "1–<10",
-      "10–<25",
-      "25–<50",
-      "50–<100",
-      "≥100"
-    ]
+      "0.00–8.60",
+      ">8.60–19.40",
+      ">19.40–34.00",
+      ">34.00–63.90",
+      ">63.90–133.50"
+    ],
+    "limites": [
+      0.0,
+      8.6,
+      19.4,
+      34.0,
+      63.9,
+      133.5
+    ],
+    "colores": [
+      "#2892c7",
+      "#a0c29b",
+      "#fafa64",
+      "#fa8d34",
+      "#e81014"
+    ],
+    "nota": "Los rangos cambian segun el periodo."
   },
   "cantones": [
     {
@@ -763,5 +781,6 @@
     "3B-HHR-E.MS.MRG.3IMERG.20261125-S103000-E105959.0630.V07C.30min.tif",
     "3B-HHR-E.MS.MRG.3IMERG.20261125-S110000-E112959.0660.V07C.30min.tif",
     "3B-HHR-E.MS.MRG.3IMERG.20261125-S113000-E115959.0690.V07C.30min.tif"
-  ]
+  ],
+  "simbologia_actualizada": "2026-11-25T14:50:50.757706-05:00"
 }
