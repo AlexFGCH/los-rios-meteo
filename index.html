@@ -387,8 +387,8 @@ filas.sort((a, b) => {
       : '';
 
   const registros = src.value==='wrf' ? [
-    ['Modelo','Provincia','Cantón','Máxima (mm)','Media (mm)','Mínimo (mm)','Suma'],
-    ...filas.map(f=>['WRF',f.provincia,f.canton,numero(f.maxima_mm),numero(f.media_mm),numero(f.minima_mm),numero(f.suma_celdas)])
+    ['Provincia','Cantón','Máxima (mm)','Media (mm)','Mínimo (mm)','Suma'],
+    ...filas.map(f=>[f.provincia,f.canton,numero(f.maxima_mm),numero(f.media_mm),numero(f.minima_mm),numero(f.suma_celdas)])
   ] : esPronostico ? [
     ['Provincia', 'Cantón', 'Máxima (mm)', 'Media (mm)',
      'Fuente', 'Inicialización UTC', 'Fecha del servicio UTC', 'Inicio Ecuador', 'Fin Ecuador', 'Convención temporal'],
@@ -441,9 +441,7 @@ filas.sort((a, b) => {
 csvCanton.addEventListener('click', () => descargarCSV('canton'));
 csvProvincia.addEventListener('click', () => descargarCSV('provincia'));
 csvTodoWRF.addEventListener('click', () => descargarCSV('todo'));
-document.getElementById('reset').addEventListener('click', () => {
-  if(src.value==='wrf' && csvDisponible() && estadisticasCSVListas())descargarCSV('todo');
-});
+
 province.addEventListener('change', actualizarBotonesCSV);
 
 const observadorCSV = new MutationObserver(actualizarBotonesCSV);
