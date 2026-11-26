@@ -262,20 +262,29 @@ const csvCanton = document.getElementById('csvCanton');
 const csvProvincia = document.getElementById('csvProvincia');
 
 function csvDisponible() {
-  return weatherData &&
-    weatherData.tipo !== 'pronostico' &&
-    ['imerg', 'pdir', 'chirps'].includes(src.value);
+  return weatherData && ['imerg', 'pdir', 'chirps', 'wrf'].includes(src.value);
 }
 
 function actualizarBotonesCSV() {
   const disponible = Boolean(csvDisponible());
+  const esWRF = src.value === 'wrf';
+  const listo = disponible && (!esWRF || weatherData.estadisticas_csv_version === 1);
   csvPanel.hidden = !disponible;
-  csvCanton.disabled = !disponible || !selected;
-  csvProvincia.disabled = !disponible || !province.value;
+  csvCanton.hidden = esWRF;
+  csvCanton.disabled = !listo || !selected || esWRF;
+  csvProvincia.disabled = !listo || !province.value;
+  csvPanel.querySelector('h2').textContent = esWRF
+    ? 'Descargar tabla del pronóstico WRF' : 'Descargar tabla de precipitación';
+  csvPanel.querySelector('p').textContent = esWRF
+    ? (listo ? 'Selecciona una provincia para descargar sus cantones.'
+       : 'Espera a que se actualicen las estadísticas WRF para esta fecha.')
+    : 'Selecciona un cantón en el mapa o una provincia en el selector.';
 }
 
 function descargarCSV(alcance) {
   if (!csvDisponible()) return;
+  const esWRF = src.value === 'wrf';
+  if (esWRF && (alcance !== 'provincia' || weatherData.estadisticas_csv_version !== 1)) return;
 
   let filas = weatherData.cantones.filter(
     f => /^\d{4}$/.test(String(f.codigo))
@@ -329,7 +338,15 @@ filas.sort((a, b) => {
       ? valor.toFixed(2)
       : '';
 
-  const registros = [
+  const registros = esWRF ? [
+    ['Provincia', 'Cantón', 'Máxima (mm)', 'Media (mm)',
+     'Fuente', 'Inicialización UTC', 'Fecha del servicio UTC'],
+    ...filas.map(f => [
+      f.provincia, f.canton, numero(f.maxima_mm), numero(f.media_mm),
+      weatherData.fuente, weatherData.inicializacion || '',
+      weatherData.fecha_servicio || ''
+    ])
+  ] : [
     ['Cantón', 'Máxima (mm)', 'Media (mm)', 'Provincia',
      'Fuente', 'Inicio', 'Fin', 'Estado', 'Horas acumuladas'],
     ...filas.map(f => [
@@ -362,7 +379,7 @@ filas.sort((a, b) => {
     .replace(/[^a-zA-Z0-9_-]+/g, '_');
 
   enlace.href = url;
-  enlace.download = 'Precipitacion_' + src.value + '_' +
+  enlace.download = (esWRF ? 'Pronostico_' : 'Precipitacion_') + src.value + '_' +
     nombreSeguro + '_' + dates.value + (src.value==='pdir'?'_'+weatherData.intervalos+'h_'+(weatherData.intervalos===24?'completo':'parcial'):'') + '.csv';
   document.body.appendChild(enlace);
   enlace.click();
