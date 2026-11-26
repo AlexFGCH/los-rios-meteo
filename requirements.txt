@@ -5,3 +5,4 @@ pyproj>=3.6,<4
 Pillow>=10,<13
 requests>=2.32,<3
 jenkspy>=0.4.1,<0.5
+eccodes>=2.44,<3

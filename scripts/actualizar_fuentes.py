@@ -8,7 +8,7 @@ def horario_habilitado(fuente, ahora):
     inicio={'pdir':6,'imerg':11}.get(fuente,0)
     return hora_ecuador>=inicio
 
-for key,script,statusfile in [('imerg','actualizar_imerg.py','estado.json'),('pdir','actualizar_pdir.py','estado_pdir.json'),('chirps','actualizar_chirps.py','estado_chirps.json'),('wrf','actualizar_wrf.py','estado_wrf.json')]:
+for key,script,statusfile in [('imerg','actualizar_imerg.py','estado.json'),('pdir','actualizar_pdir.py','estado_pdir.json'),('chirps','actualizar_chirps.py','estado_chirps.json'),('wrf','actualizar_wrf.py','estado_wrf.json'),('ecmwf','actualizar_ecmwf.py','estado_ecmwf.json')]:
     if not horario_habilitado(key,datetime.now(timezone.utc)):
         print(f'{key}: fuera del horario de consulta; se conserva el ultimo periodo completo.',flush=True)
         continue
@@ -20,12 +20,13 @@ for key,script,statusfile in [('imerg','actualizar_imerg.py','estado.json'),('pd
         (DATA/statusfile).write_text(json.dumps(value,ensure_ascii=False,indent=2))
         print(f'::warning::La fuente {key} no pudo actualizarse. Se conserva su ultimo periodo disponible.',flush=True)
 catalog={}
-for key in ['imerg','pdir','chirps','wrf']:
+for key in ['imerg','pdir','chirps','wrf','ecmwf']:
     catalog[key]=sorted([p.stem for p in (DATA/key).glob('*.json')
                         if p.with_suffix('.png').exists() and p.with_suffix('.tif').exists()],reverse=True)
-state=DATA/'estado_wrf.json'
-if state.exists():
-    wrf=json.loads(state.read_text())
-    if wrf.get('periodos'):catalog['wrf']=[p for p in wrf['periodos'] if p in catalog['wrf']]
+for source in ['wrf','ecmwf']:
+    state=DATA/('estado_'+source+'.json')
+    if state.exists():
+        value=json.loads(state.read_text())
+        if value.get('periodos'):catalog[source]=[p for p in value['periodos'] if p in catalog[source]]
 (DATA/'catalogo.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2))
 print('Catalogo completo actualizado.',flush=True)

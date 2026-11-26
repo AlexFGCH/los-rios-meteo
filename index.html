@@ -8,7 +8,7 @@
 <header><small>LOS RÍOS Y CANTONES ALEDAÑOS · ECUADOR</small><h1>Monitor de precipitación y pronósticos</h1><p>Consulta territorial de precipitaciones y pronósticos</p></header>
 <main><div class="notice" id="weatherStatus" role="status"><strong>Cargando información.</strong> Consultando las fuentes de precipitación y pronóstico disponibles.</div>
 <section class="stats" aria-label="Cobertura territorial"><div class="stat"><b>68</b><span>Unidades territoriales</span></div><div class="stat"><b>13</b><span>Cantones de Los Ríos</span></div><div class="stat"><b>7</b><span>Cantones de Bolívar</span></div></section>
-<div class="layout"><aside class="panel sidebar"><h2>Explorar el territorio</h2><label for="observedSource">Precipitación estimada</label><select id="observedSource"><option value="" disabled>Seleccionar estimación…</option><option value="imerg" selected>NASA GPM IMERG Early</option><option value="pdir">PDIR-Now CHRS</option><option value="chirps">CHIRPS v3 SAT</option></select><label for="forecastSource">Pronóstico</label><select id="forecastSource"><option value="" selected disabled>Seleccionar pronóstico…</option><option value="wrf">WRF · INAMHI</option></select><p class="subtle" style="font-size:12px;line-height:1.4">Selecciona una estimación o un pronóstico para verlo en el mapa.</p><select id="source" hidden aria-hidden="true"><option value="imerg">NASA GPM IMERG Early</option><option value="pdir">PDIR-Now CHRS</option><option value="chirps">CHIRPS v3 SAT</option><option value="wrf">WRF · INAMHI</option></select><label id="dateLabel" for="date">Fecha final del acumulado (07h00)</label><select id="date"><option value="">Cargando disponibilidad…</option></select><label for="province">Provincia</label><select id="province"><option value="">Todas las provincias</option></select><input id="search" type="hidden" value="">
+<div class="layout"><aside class="panel sidebar"><h2>Explorar el territorio</h2><label for="observedSource">Precipitación estimada</label><select id="observedSource"><option value="" disabled>Seleccionar estimación…</option><option value="imerg" selected>NASA GPM IMERG Early</option><option value="pdir">PDIR-Now CHRS</option><option value="chirps">CHIRPS v3 SAT</option></select><label for="forecastSource">Pronóstico</label><select id="forecastSource"><option value="" selected disabled>Seleccionar pronóstico…</option><option value="ecmwf">ECMWF IFS · 5 días</option><option value="wrf">WRF · INAMHI</option></select><p class="subtle" style="font-size:12px;line-height:1.4">Selecciona una estimación o un pronóstico para verlo en el mapa.</p><select id="source" hidden aria-hidden="true"><option value="imerg">NASA GPM IMERG Early</option><option value="pdir">PDIR-Now CHRS</option><option value="chirps">CHIRPS v3 SAT</option><option value="ecmwf">ECMWF IFS · 5 días</option><option value="wrf">WRF · INAMHI</option></select><label id="dateLabel" for="date">Fecha final del acumulado (07h00)</label><select id="date"><option value="">Cargando disponibilidad…</option></select><label for="province">Provincia</label><select id="province"><option value="">Todas las provincias</option></select><input id="search" type="hidden" value="">
 <label class="check"><input id="buffer" type="checkbox"> Mostrar límite de descarga</label>
 <button id="reset" type="button">Ver toda el área</button>
 <div id="count" role="status" aria-live="polite"></div>
@@ -131,7 +131,7 @@ document.getElementById('reset').addEventListener(
 );
  function estadoPDIR(d){return (d.intervalos===24?'Completo':'Parcial')+' · '+d.intervalos+'/24 horas';}
  function periodoPDIR(d){return d.inicio.slice(0,16).replace('T',' ')+' → '+d.fin.slice(0,16).replace('T',' ')+' Ecuador · '+estadoPDIR(d);}
- function periodText(d){if(d.producto==='pdir'||d.fuente?.startsWith('PDIR-Now'))return periodoPDIR(d);if(d.tipo==='pronostico')return 'Fecha del servicio: '+d.fecha_servicio.replace('T',' ').replace('.000Z',' UTC')+' · Inicialización: '+d.inicializacion.replace('T',' ').replace('.000Z',' UTC')+' · '+d.convencion_temporal;return d.fecha_producto?'Día '+d.fecha_producto+' · '+d.estado_producto+' · etiqueta diaria UTC; no corresponde a 07h00–07h00 Ecuador':d.inicio.slice(0,10)+' 07h00 a '+d.fin.slice(0,10)+' 07h00 Ecuador · '+d.intervalos+' intervalos completos';}
+ function periodText(d){if(d.producto==='ecmwf')return d.inicio.slice(0,16).replace('T',' ')+' → '+d.fin.slice(0,16).replace('T',' ')+' Ecuador · Inicialización: '+d.inicializacion.replace('T',' ').replace('.000Z',' UTC');if(d.producto==='pdir'||d.fuente?.startsWith('PDIR-Now'))return periodoPDIR(d);if(d.tipo==='pronostico')return 'Fecha del servicio: '+d.fecha_servicio.replace('T',' ').replace('.000Z',' UTC')+' · Inicialización: '+d.inicializacion.replace('T',' ').replace('.000Z',' UTC')+' · '+d.convencion_temporal;return d.fecha_producto?'Día '+d.fecha_producto+' · '+d.estado_producto+' · etiqueta diaria UTC; no corresponde a 07h00–07h00 Ecuador':d.inicio.slice(0,10)+' 07h00 a '+d.fin.slice(0,10)+' 07h00 Ecuador · '+d.intervalos+' intervalos completos';}
  function hoverText(p,data,source){
   const name='<strong>'+esc(p.canton)+'</strong>';
   if(!data||data.tipo==='pronostico'||!['imerg','pdir','chirps'].includes(source))return name;
@@ -142,7 +142,7 @@ document.getElementById('reset').addEventListener(
  function rainInfo(code){
   if(!weatherData)return '<p class="subtle">No hay un acumulado conectado para esta selección.</p>';
   const s=weatherData.cantones.find(s=>s.codigo===code);
-  if(weatherData.tipo==='pronostico')return '<p><strong>Pronóstico WRF</strong></p><p>'+(!s?.cobertura_completa?'Sin cobertura completa para este cantón.':s.posicion_relativa?'Posición relativa de precipitación prevista: '+Number(s.posicion_relativa)+'.':'Sin clasificación disponible.')+'</p><p class="subtle">La comparación utiliza la media territorial del modelo. '+esc(periodText(weatherData))+'. Resolución: '+esc(weatherData.resolucion)+'.</p>';
+  if(weatherData.tipo==='pronostico')return '<p><strong>Pronóstico '+esc(weatherData.modelo||'WRF')+'</strong></p><p>'+(!s?.cobertura_completa?'Sin cobertura completa para este cantón.':s.posicion_relativa?'Posición relativa de precipitación prevista: '+Number(s.posicion_relativa)+'.':'Sin clasificación disponible.')+'</p><p class="subtle">La comparación utiliza la media territorial del modelo. '+esc(periodText(weatherData))+'. Resolución: '+esc(weatherData.resolucion)+'.</p>';
   if(!s||s.media_mm===null)return '<p class="subtle">Sin cobertura completa para este cantón.</p>';
   const zona = weatherData.fecha_producto ? 'UTC' : 'America/Guayaquil';
   const fechaHora = valor => new Date(valor).toLocaleString('es-EC', {
@@ -173,9 +173,9 @@ document.getElementById('reset').addEventListener(
  async function loadRain(){
   const token=++requestId;clearRain();
   document.getElementById('details').innerHTML='<h2>Selecciona un cantón</h2><p class="subtle">Los valores corresponden únicamente a la fuente y período seleccionados.</p>';
-  if(!['imerg','pdir','chirps','wrf'].includes(src.value)){status.textContent='Esta fuente todavía no está conectada. No se muestran datos de otro producto en su lugar.';return;}
+  if(!['imerg','pdir','chirps','wrf','ecmwf'].includes(src.value)){status.textContent='Esta fuente todavía no está conectada. No se muestran datos de otro producto en su lugar.';return;}
   lastState=sourceStates[src.value]||null;const day=dates.value;
-  if(!day){status.textContent=({imerg:'IMERG',pdir:'PDIR-Now',chirps:'CHIRPS',wrf:'WRF'}[src.value])+': esperando el primer período completo. '+(lastState?.mensaje||'Ejecuta el flujo de GitHub Actions para descargar los datos.');return;}
+  if(!day){status.textContent=({imerg:'IMERG',pdir:'PDIR-Now',chirps:'CHIRPS',wrf:'WRF',ecmwf:'ECMWF IFS'}[src.value])+': esperando el primer período completo. '+(lastState?.mensaje||'Ejecuta el flujo de GitHub Actions para descargar los datos.');return;}
   status.textContent='Cargando acumulado…';
   try{
    const response=await fetch('data/'+src.value+'/'+encodeURIComponent(day)+'.json',{cache:'no-store'});if(!response.ok)throw Error();
@@ -183,7 +183,8 @@ document.getElementById('reset').addEventListener(
    if(d.unidad!=='mm')throw Error();
    if(src.value==='pdir'){
     if(![22,23,24].includes(d.intervalos)||(Date.parse(d.fin)-Date.parse(d.inicio))/3600000!==d.intervalos)throw Error();
-   }else if(d.intervalos!==({imerg:48,chirps:1,wrf:1}[src.value]))throw Error();
+   }else if(d.intervalos!==({imerg:48,chirps:1,wrf:1,ecmwf:1}[src.value]))throw Error();
+   if(src.value==='ecmwf'&&(d.producto!=='ecmwf'||(Date.parse(d.fin)-Date.parse(d.inicio))/3600000!==24))throw Error();
    weatherData=d;
    if(src.value==='pdir'&&dates.selectedIndex>=0)dates.options[dates.selectedIndex].textContent=periodoPDIR(d);
    rainLayer=L.imageOverlay(d.imagen+'?generado='+encodeURIComponent(d.generado),d.bounds,{pane:'rain',opacity:0.85,interactive:false}).addTo(map);
@@ -198,6 +199,7 @@ document.getElementById('reset').addEventListener(
   document.getElementById('dateLabel').textContent =
     diaria ? 'Período de precipitación · hora Ecuador' :
     src.value === 'chirps' ? 'Fecha del producto diario CHIRPS' :
+    src.value === 'ecmwf' ? 'Período del pronóstico · hora Ecuador' :
     'Fecha del servicio WRF (UTC)';
 
   dates.replaceChildren();
@@ -223,6 +225,12 @@ document.getElementById('reset').addEventListener(
 
         label = formato(inicio) + ' 07h00 → ' +
                 formato(fin) + ' 07h00';
+      } else if (src.value === 'ecmwf') {
+        const clave = d.split('_')[1];
+        const fin = new Date(clave.replace(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})Z$/, '$1-$2-$3T$4:$5:00Z'));
+        const inicio = new Date(fin.getTime()-86400000);
+        const formato = fecha => fecha.toLocaleDateString('es-EC', {day:'2-digit',month:'2-digit',year:'numeric',timeZone:'America/Guayaquil'});
+        label = formato(inicio)+' 07h00 → '+formato(fin)+' 07h00';
       } else if (src.value === 'wrf') {
         label = d.split('_')[1].replace(
           /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})Z$/,
@@ -243,7 +251,7 @@ document.getElementById('reset').addEventListener(
 
  async function initWeather(){
   try{const r=await fetch('data/catalogo.json',{cache:'no-store'});if(!r.ok)throw Error();catalog=await r.json();}catch(e){catalog={imerg:[]};}
-  for(const [key,file] of [['imerg','estado.json'],['pdir','estado_pdir.json'],['chirps','estado_chirps.json'],['wrf','estado_wrf.json']]){try{const r=await fetch('data/'+file,{cache:'no-store'});if(r.ok)sourceStates[key]=await r.json();}catch(e){}}
+  for(const [key,file] of [['imerg','estado.json'],['pdir','estado_pdir.json'],['chirps','estado_chirps.json'],['wrf','estado_wrf.json'],['ecmwf','estado_ecmwf.json']]){try{const r=await fetch('data/'+file,{cache:'no-store'});if(r.ok)sourceStates[key]=await r.json();}catch(e){}}
   setDates();
  }
  // Descargas CSV de precipitacion estimada
@@ -262,29 +270,29 @@ const csvCanton = document.getElementById('csvCanton');
 const csvProvincia = document.getElementById('csvProvincia');
 
 function csvDisponible() {
-  return weatherData && ['imerg', 'pdir', 'chirps', 'wrf'].includes(src.value);
+  return weatherData && ['imerg', 'pdir', 'chirps', 'wrf', 'ecmwf'].includes(src.value);
 }
 
 function actualizarBotonesCSV() {
   const disponible = Boolean(csvDisponible());
-  const esWRF = src.value === 'wrf';
-  const listo = disponible && (!esWRF || weatherData.estadisticas_csv_version === 1);
+  const esPronostico = ['wrf','ecmwf'].includes(src.value);
+  const listo = disponible && (!esPronostico || weatherData.estadisticas_csv_version === 1);
   csvPanel.hidden = !disponible;
-  csvCanton.hidden = esWRF;
-  csvCanton.disabled = !listo || !selected || esWRF;
+  csvCanton.hidden = esPronostico;
+  csvCanton.disabled = !listo || !selected || esPronostico;
   csvProvincia.disabled = !listo || !province.value;
-  csvPanel.querySelector('h2').textContent = esWRF
-    ? 'Descargar tabla del pronóstico WRF' : 'Descargar tabla de precipitación';
-  csvPanel.querySelector('p').textContent = esWRF
+  csvPanel.querySelector('h2').textContent = esPronostico
+    ? 'Descargar tabla del pronóstico '+(weatherData?.modelo||'WRF') : 'Descargar tabla de precipitación';
+  csvPanel.querySelector('p').textContent = esPronostico
     ? (listo ? 'Selecciona una provincia para descargar sus cantones.'
-       : 'Espera a que se actualicen las estadísticas WRF para esta fecha.')
+       : 'Espera a que se actualicen las estadísticas del pronóstico para esta fecha.')
     : 'Selecciona un cantón en el mapa o una provincia en el selector.';
 }
 
 function descargarCSV(alcance) {
   if (!csvDisponible()) return;
-  const esWRF = src.value === 'wrf';
-  if (esWRF && (alcance !== 'provincia' || weatherData.estadisticas_csv_version !== 1)) return;
+  const esPronostico = ['wrf','ecmwf'].includes(src.value);
+  if (esPronostico && (alcance !== 'provincia' || weatherData.estadisticas_csv_version !== 1)) return;
 
   let filas = weatherData.cantones.filter(
     f => /^\d{4}$/.test(String(f.codigo))
@@ -338,13 +346,13 @@ filas.sort((a, b) => {
       ? valor.toFixed(2)
       : '';
 
-  const registros = esWRF ? [
+  const registros = esPronostico ? [
     ['Provincia', 'Cantón', 'Máxima (mm)', 'Media (mm)',
-     'Fuente', 'Inicialización UTC', 'Fecha del servicio UTC'],
+     'Fuente', 'Inicialización UTC', 'Fecha del servicio UTC', 'Inicio Ecuador', 'Fin Ecuador', 'Convención temporal'],
     ...filas.map(f => [
       f.provincia, f.canton, numero(f.maxima_mm), numero(f.media_mm),
       weatherData.fuente, weatherData.inicializacion || '',
-      weatherData.fecha_servicio || ''
+      weatherData.fecha_servicio || '', weatherData.inicio || '', weatherData.fin || '', weatherData.convencion_temporal || ''
     ])
   ] : [
     ['Cantón', 'Máxima (mm)', 'Media (mm)', 'Provincia',
@@ -379,7 +387,7 @@ filas.sort((a, b) => {
     .replace(/[^a-zA-Z0-9_-]+/g, '_');
 
   enlace.href = url;
-  enlace.download = (esWRF ? 'Pronostico_' : 'Precipitacion_') + src.value + '_' +
+  enlace.download = (esPronostico ? 'Pronostico_' : 'Precipitacion_') + src.value + '_' +
     nombreSeguro + '_' + dates.value + (src.value==='pdir'?'_'+weatherData.intervalos+'h_'+(weatherData.intervalos===24?'completo':'parcial'):'') + '.csv';
   document.body.appendChild(enlace);
   enlace.click();
