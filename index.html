@@ -217,7 +217,31 @@ function descargarCSV(alcance) {
     return;
   }
 
-  filas.sort((a, b) => a.canton.localeCompare(b.canton, 'es'));
+  const ordenCantones = [
+  'BABAHOYO', 'BABA', 'MONTALVO', 'PUEBLOVIEJO',
+  'QUEVEDO', 'URDANETA', 'VENTANAS', 'VINCES',
+  'PALENQUE', 'BUENA FE', 'VALENCIA', 'MOCACHE',
+  'QUINSALOMA'
+];
+
+const normalizarCanton = nombre => String(nombre)
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .trim()
+  .replace(/\s+/g, ' ')
+  .toUpperCase();
+
+filas.sort((a, b) => {
+  const nombreA = normalizarCanton(a.canton);
+  const nombreB = normalizarCanton(b.canton);
+  const indiceA = ordenCantones.indexOf(nombreA);
+  const indiceB = ordenCantones.indexOf(nombreB);
+  const posicionA = indiceA < 0 ? Infinity : indiceA;
+  const posicionB = indiceB < 0 ? Infinity : indiceB;
+
+  return posicionA - posicionB ||
+    nombreA.localeCompare(nombreB, 'es');
+});
 
   const numero = valor =>
     typeof valor === 'number' && Number.isFinite(valor)
