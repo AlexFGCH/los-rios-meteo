@@ -124,6 +124,118 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
   for(const [key,file] of [['imerg','estado.json'],['pdir','estado_pdir.json'],['chirps','estado_chirps.json'],['wrf','estado_wrf.json']]){try{const r=await fetch('data/'+file,{cache:'no-store'});if(r.ok)sourceStates[key]=await r.json();}catch(e){}}
   setDates();
  }
+ // Descargas CSV de precipitacion estimada
+const csvPanel = document.createElement('section');
+csvPanel.className = 'panel details';
+csvPanel.innerHTML = `
+  <h2>Descargar tabla de precipitación</h2>
+  <p>Selecciona un cantón en el mapa o una provincia en el selector.</p>
+  <button id="csvCanton" type="button" disabled>Descargar cantón CSV</button>
+  <button id="csvProvincia" type="button" disabled>Descargar provincia CSV</button>
+`;
+document.getElementById('details').after(csvPanel);
+
+const csvCanton = document.getElementById('csvCanton');
+const csvProvincia = document.getElementById('csvProvincia');
+
+function csvDisponible() {
+  return weatherData &&
+    weatherData.tipo !== 'pronostico' &&
+    ['imerg', 'pdir', 'chirps'].includes(src.value);
+}
+
+function actualizarBotonesCSV() {
+  const disponible = Boolean(csvDisponible());
+  csvPanel.hidden = !disponible;
+  csvCanton.disabled = !disponible || !selected;
+  csvProvincia.disabled = !disponible || !province.value;
+}
+
+function descargarCSV(alcance) {
+  if (!csvDisponible()) return;
+
+  let filas = weatherData.cantones.filter(
+    f => /^\d{4}$/.test(String(f.codigo))
+  );
+  let nombre;
+
+  if (alcance === 'canton') {
+    if (!selected) return;
+    const codigo = String(selected.feature.properties.codigo);
+    filas = filas.filter(f => String(f.codigo) === codigo);
+    nombre = selected.feature.properties.canton;
+  } else {
+    if (!province.value) return;
+    filas = filas.filter(f => f.provincia === province.value);
+    nombre = province.value;
+  }
+
+  if (!filas.length) {
+    alert('No hay datos para esta selección.');
+    return;
+  }
+
+  filas.sort((a, b) => a.canton.localeCompare(b.canton, 'es'));
+
+  const numero = valor =>
+    typeof valor === 'number' && Number.isFinite(valor)
+      ? valor.toFixed(2)
+      : '';
+
+  const registros = [
+    ['Cantón', 'Máxima (mm)', 'Media (mm)', 'Provincia',
+     'Fuente', 'Inicio', 'Fin'],
+    ...filas.map(f => [
+      f.canton,
+      numero(f.maxima_mm),
+      numero(f.media_mm),
+      f.provincia,
+      weatherData.fuente,
+      weatherData.inicio || '',
+      weatherData.fin || ''
+    ])
+  ];
+
+  const celda = valor =>
+    '"' + String(valor ?? '').replace(/"/g, '""') + '"';
+
+  const contenido = '\uFEFF' + registros.map(
+    fila => fila.map(celda).join(',')
+  ).join('\r\n');
+
+  const archivo = new Blob([contenido], {
+    type: 'text/csv;charset=utf-8;'
+  });
+  const enlace = document.createElement('a');
+  const url = URL.createObjectURL(archivo);
+  const nombreSeguro = String(nombre).normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9_-]+/g, '_');
+
+  enlace.href = url;
+  enlace.download = 'Precipitacion_' + src.value + '_' +
+    nombreSeguro + '_' + dates.value + '.csv';
+  document.body.appendChild(enlace);
+  enlace.click();
+  enlace.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+csvCanton.addEventListener('click', () => descargarCSV('canton'));
+csvProvincia.addEventListener('click', () => descargarCSV('provincia'));
+province.addEventListener('change', actualizarBotonesCSV);
+
+const observadorCSV = new MutationObserver(actualizarBotonesCSV);
+observadorCSV.observe(document.getElementById('details'), {
+  childList: true,
+  subtree: true
+});
+observadorCSV.observe(status, {
+  childList: true,
+  subtree: true,
+  characterData: true
+});
+actualizarBotonesCSV();
  initWeather();
 filter(false);map.fitBounds(allBounds,{padding:[15,15]});
 }
