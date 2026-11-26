@@ -93,7 +93,7 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
   const list=document.getElementById('list');list.replaceChildren();
   layer.eachLayer(l=>{let b=document.createElement('button');b.className='place';b.type='button';let name=document.createElement('span');name.textContent=l.feature.properties.canton;let sub=document.createElement('small');sub.textContent=l.feature.properties.provincia;b.append(name,sub);b.addEventListener('click',()=>select(l.feature,l));list.appendChild(b)});
   document.getElementById('count').textContent=features.length+' de '+CANTONES.features.length+' unidades territoriales';
-  document.getElementById('details').innerHTML='<h2>'+(features.length?'Selecciona un cantón':'Sin coincidencias')+'</h2><div class="subtle">'+(features.length?'Los colores distinguen territorios; no representan lluvia ni amenaza.':'Prueba otro nombre o selecciona todas las provincias.')+'</div>';
+  document.getElementById('details').innerHTML='<h2>'+(features.length?'Selecciona un cantón':'Sin coincidencias')+'</h2>';
   if(fit&&features.length)map.fitBounds(layer.getBounds(),{padding:[20,20],maxZoom:11});
  }
  province.addEventListener('change',()=>filter());search.addEventListener('input',()=>filter(false));
