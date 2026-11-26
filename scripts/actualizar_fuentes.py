@@ -30,3 +30,8 @@ for source in ['wrf','ecmwf']:
         if value.get('periodos'):catalog[source]=[p for p in value['periodos'] if p in catalog[source]]
 (DATA/'catalogo.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2))
 print('Catalogo completo actualizado.',flush=True)
+
+# Clasificar el raster provincial despues de actualizar y catalogar las fuentes.
+provincial=subprocess.run([sys.executable,'-u',str(ROOT/'scripts/generar_mapas_losrios.py')])
+if provincial.returncode:
+    print('::warning::No se completaron todos los rangos de Los Rios; revisar Actions. No se exportaran mapas provinciales con rangos de otra area.',flush=True)

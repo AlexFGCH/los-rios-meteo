@@ -87,6 +87,15 @@ async function render({data,source,scope='area',canvasFactory}={}){
  if(!data||data.unidad!=='mm'||!['imerg','pdir','chirps','wrf','ecmwf'].includes(source))throw Error('Selecciona un producto disponible.');
  if(!Array.isArray(data.bounds)||!data.imagen)throw Error('El producto no tiene imagen cartográfica.');
  const pred=forecast(data,source);await fonts();const t=await territory();
+ if(scope==='losrios'&&!pred){
+  const filename=String(data.imagen).split('/').pop().split('?')[0].replace(/\.png$/i,'.json');
+  const r=await fetch('data/exportacion/losrios/'+source+'/'+encodeURIComponent(filename),{cache:'no-store'});
+  if(!r.ok)throw Error('Aún no están listos los rangos de Los Ríos para este período. Ejecuta la actualización en Actions.');
+  const local=await r.json();
+  if(local.version!==1||local.unidad!=='mm'||local.ambito!=='losrios'||local.fuente!==source||local.original_generado!==data.generado)throw Error('Los rangos provinciales deben actualizarse para este período.');
+  data={...data,imagen:local.imagen,bounds:local.bounds,leyenda:local.leyenda};
+ }
+
  const [back,img]=await Promise.all([image(t.relieve.imagen),image(data.imagen+'?generado='+encodeURIComponent(data.generado||''))]);
  const canvas=canvasFactory?canvasFactory(W,H):document.createElement('canvas');canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');
  ctx.fillStyle='white';ctx.fillRect(0,0,W,H);

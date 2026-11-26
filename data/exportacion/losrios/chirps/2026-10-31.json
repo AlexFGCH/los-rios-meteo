@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "firma": "d292eb4768da68ec0a142235c3aa3fe5f44d6ea3053223406a1e0ad8c465a55e",
+  "fuente": "chirps",
+  "ambito": "losrios",
+  "unidad": "mm",
+  "original_generado": "2026-11-25T15:43:18.875647-05:00",
+  "generado": "2026-11-26T20:24:19.772936+00:00",
+  "imagen": "data/exportacion/losrios/chirps/2026-10-31.png",
+  "bounds": [
+    [
+      -2.800000935792923,
+      -80.59999851882458
+    ],
+    [
+      0.14999910816550255,
+      -78.2999984845519
+    ]
+  ],
+  "leyenda": {
+    "metodo": "Natural Breaks (Jenks)",
+    "categorias": 5,
+    "categorias_solicitadas": 5,
+    "titulo": "Acumulado estimado (mm)",
+    "ambito": "Provincia de Los Rios",
+    "rangos": [
+      "1.69–5.75",
+      ">5.75–9.67",
+      ">9.67–14.17",
+      ">14.17–23.13",
+      ">23.13–36.92"
+    ],
+    "limites": [
+      1.694,
+      5.754,
+      9.671,
+      14.166,
+      23.128,
+      36.918
+    ],
+    "colores": [
+      "#2892c7",
+      "#a0c29b",
+      "#fafa64",
+      "#fa8d34",
+      "#e81014"
+    ]
+  },
+  "minima_mm": 1.694,
+  "maxima_mm": 36.918,
+  "maxima_tabla_mm": 36.92,
+  "celdas_validas": 310,
+  "metodo_mascara": "Celdas nativas validas con interseccion de area positiva con los 13 cantones originales de Los Rios."
+}
