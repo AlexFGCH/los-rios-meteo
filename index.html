@@ -157,6 +157,7 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
 
   loadRain();
 }
+ dates.addEventListener('change', loadRain);
  const observedSource=document.getElementById('observedSource'),forecastSource=document.getElementById('forecastSource');
  observedSource.addEventListener('change',()=>{if(!observedSource.value)return;src.value=observedSource.value;forecastSource.value='';setDates();});
  forecastSource.addEventListener('change',()=>{if(!forecastSource.value)return;src.value=forecastSource.value;observedSource.value='';setDates();});
