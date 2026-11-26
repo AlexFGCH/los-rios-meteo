@@ -215,7 +215,7 @@ document.getElementById('reset').addEventListener(
     diaria ? 'Período de precipitación · hora Ecuador' :
     src.value === 'chirps' ? 'Fecha del producto diario CHIRPS' :
     src.value === 'ecmwf' ? 'Período del pronóstico · hora Ecuador' :
-    'Fecha del servicio WRF (UTC)';
+    'Período del pronóstico · hora Ecuador';
 
   dates.replaceChildren();
   const days = catalog[src.value] || [];
@@ -247,11 +247,23 @@ document.getElementById('reset').addEventListener(
         const formato = fecha => fecha.toLocaleDateString('es-EC', {day:'2-digit',month:'2-digit',year:'numeric',timeZone:'America/Guayaquil'});
         label = formato(inicio)+' 07h00 → '+formato(fin)+' 07h00';
       } else if (src.value === 'wrf') {
-        label = d.split('_')[1].replace(
-          /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})Z$/,
-          '$1-$2-$3 $4:$5 UTC'
-        );
-      }
+  const clave = d.split('_')[1];
+  const inicio = new Date(
+    clave.slice(0,4)+'-'+clave.slice(4,6)+'-'+
+    clave.slice(6,8)+'T00:00:00Z'
+  );
+  const fin = new Date(inicio);
+  fin.setUTCDate(fin.getUTCDate()+1);
+
+  const formato = fecha => fecha.toLocaleDateString('es-EC', {
+    day:'2-digit',
+    month:'2-digit',
+    year:'numeric',
+    timeZone:'UTC'
+  });
+
+  label = formato(inicio)+' 07h00 → '+formato(fin)+' 07h00';
+}
 
       dates.add(new Option(label, d));
     });
