@@ -1,11 +1,13 @@
 {
   "tipo": "pronostico",
-  "estadisticas_csv_version": 1,
+  "estadisticas_csv_version": 2,
+  "producto": "wrf",
+  "modelo": "WRF",
   "fuente": "WRF · servicio del visor INAMHI",
   "fecha_fin": "2026-11-27",
   "fecha_servicio": "2026-11-27T07:00:00.000Z",
   "inicializacion": "2026-11-26T07:00:00.000Z",
-  "generado": "2026-11-26T13:25:28.462518-05:00",
+  "generado": "2026-11-26T13:48:46.895561-05:00",
   "intervalos": 1,
   "unidad": "mm",
   "convencion_temporal": "Producto diario. Extremos horarios del acumulado pendientes de confirmar; TIME no se interpreta como inicio ni fin local.",
@@ -24,6 +26,8 @@
   "resolucion": "0.027 grados (aproximadamente 3 km)",
   "metodo_media": "Ponderada por area de interseccion con celdas nativas; solo cobertura completa.",
   "metodo_maxima": "Mayor valor de celda nativa con interseccion de area positiva; solo cobertura completa.",
+  "metodo_minima": "Menor valor de celda nativa con interseccion de area positiva; solo cobertura completa.",
+  "metodo_suma": "Suma sin ponderar de las celdas nativas validas con interseccion de area positiva; no es volumen ni acumulacion temporal.",
   "leyenda": {
     "tipo": "stretched",
     "titulo": "Precipitación prevista",
@@ -49,6 +53,9 @@
       "cobertura_completa": true,
       "media_mm": 25.26,
       "maxima_mm": 143.6,
+      "minima_mm": 0.02,
+      "suma_celdas": 6769.14,
+      "celdas_validas": 259,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 28
     },
@@ -60,6 +67,9 @@
       "cobertura_completa": true,
       "media_mm": 58.65,
       "maxima_mm": 185.36,
+      "minima_mm": 1.47,
+      "suma_celdas": 5663.92,
+      "celdas_validas": 101,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 7
     },
@@ -71,6 +81,9 @@
       "cobertura_completa": true,
       "media_mm": 48.82,
       "maxima_mm": 161.05,
+      "minima_mm": 2.21,
+      "suma_celdas": 2542.11,
+      "celdas_validas": 50,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 10
     },
@@ -82,6 +95,9 @@
       "cobertura_completa": true,
       "media_mm": 63.51,
       "maxima_mm": 158.64,
+      "minima_mm": 12.62,
+      "suma_celdas": 2872.31,
+      "celdas_validas": 46,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 5
     },
@@ -93,6 +109,9 @@
       "cobertura_completa": true,
       "media_mm": 39.83,
       "maxima_mm": 190.52,
+      "minima_mm": 0.02,
+      "suma_celdas": 3778.92,
+      "celdas_validas": 93,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 16
     },
@@ -104,6 +123,9 @@
       "cobertura_completa": true,
       "media_mm": 68.62,
       "maxima_mm": 162.14,
+      "minima_mm": 9.88,
+      "suma_celdas": 2330.85,
+      "celdas_validas": 36,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 4
     },
@@ -115,6 +137,9 @@
       "cobertura_completa": true,
       "media_mm": 80.1,
       "maxima_mm": 143.6,
+      "minima_mm": 29.51,
+      "suma_celdas": 2322.8,
+      "celdas_validas": 32,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 3
     },
@@ -126,6 +151,9 @@
       "cobertura_completa": true,
       "media_mm": 12.97,
       "maxima_mm": 83.54,
+      "minima_mm": 0.01,
+      "suma_celdas": 3561.92,
+      "celdas_validas": 274,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 40
     },
@@ -137,6 +165,9 @@
       "cobertura_completa": true,
       "media_mm": 2.49,
       "maxima_mm": 7.17,
+      "minima_mm": 0.11,
+      "suma_celdas": 38.25,
+      "celdas_validas": 18,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 59
     },
@@ -148,6 +179,9 @@
       "cobertura_completa": true,
       "media_mm": 28.27,
       "maxima_mm": 49.39,
+      "minima_mm": 1.21,
+      "suma_celdas": 353.16,
+      "celdas_validas": 14,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 25
     },
@@ -159,6 +193,9 @@
       "cobertura_completa": true,
       "media_mm": 46.83,
       "maxima_mm": 145.06,
+      "minima_mm": 7.21,
+      "suma_celdas": 5205.99,
+      "celdas_validas": 110,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 12
     },
@@ -170,6 +207,9 @@
       "cobertura_completa": true,
       "media_mm": 61.32,
       "maxima_mm": 169.27,
+      "minima_mm": 0.86,
+      "suma_celdas": 6025.84,
+      "celdas_validas": 110,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 6
     },
@@ -181,6 +221,9 @@
       "cobertura_completa": true,
       "media_mm": 11.37,
       "maxima_mm": 69.9,
+      "minima_mm": 0.02,
+      "suma_celdas": 2405.03,
+      "celdas_validas": 200,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 42
     },
@@ -192,6 +235,9 @@
       "cobertura_completa": true,
       "media_mm": 1.47,
       "maxima_mm": 4.33,
+      "minima_mm": 0.0,
+      "suma_celdas": 113.52,
+      "celdas_validas": 88,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 62
     },
@@ -203,6 +249,9 @@
       "cobertura_completa": true,
       "media_mm": 24.53,
       "maxima_mm": 114.27,
+      "minima_mm": 0.45,
+      "suma_celdas": 4729.1,
+      "celdas_validas": 195,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 30
     },
@@ -214,6 +263,9 @@
       "cobertura_completa": true,
       "media_mm": 1.43,
       "maxima_mm": 10.96,
+      "minima_mm": 0.0,
+      "suma_celdas": 278.85,
+      "celdas_validas": 169,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 63
     },
@@ -225,6 +277,9 @@
       "cobertura_completa": true,
       "media_mm": 3.18,
       "maxima_mm": 30.2,
+      "minima_mm": 0.0,
+      "suma_celdas": 545.66,
+      "celdas_validas": 172,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 55
     },
@@ -236,6 +291,9 @@
       "cobertura_completa": true,
       "media_mm": 4.74,
       "maxima_mm": 23.21,
+      "minima_mm": 0.0,
+      "suma_celdas": 523.82,
+      "celdas_validas": 123,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 51
     },
@@ -247,6 +305,9 @@
       "cobertura_completa": true,
       "media_mm": 1.35,
       "maxima_mm": 4.87,
+      "minima_mm": 0.0,
+      "suma_celdas": 44.41,
+      "celdas_validas": 32,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 64
     },
@@ -258,6 +319,9 @@
       "cobertura_completa": true,
       "media_mm": 4.54,
       "maxima_mm": 30.82,
+      "minima_mm": 0.0,
+      "suma_celdas": 242.47,
+      "celdas_validas": 51,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 52
     },
@@ -269,6 +333,9 @@
       "cobertura_completa": true,
       "media_mm": 3.01,
       "maxima_mm": 15.06,
+      "minima_mm": 0.01,
+      "suma_celdas": 576.97,
+      "celdas_validas": 177,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 56
     },
@@ -280,6 +347,9 @@
       "cobertura_completa": true,
       "media_mm": 1.03,
       "maxima_mm": 5.37,
+      "minima_mm": 0.0,
+      "suma_celdas": 71.91,
+      "celdas_validas": 76,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 66
     },
@@ -291,6 +361,9 @@
       "cobertura_completa": true,
       "media_mm": 4.15,
       "maxima_mm": 17.21,
+      "minima_mm": 0.07,
+      "suma_celdas": 240.83,
+      "celdas_validas": 60,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 54
     },
@@ -302,6 +375,9 @@
       "cobertura_completa": true,
       "media_mm": 17.45,
       "maxima_mm": 87.75,
+      "minima_mm": 0.26,
+      "suma_celdas": 969.66,
+      "celdas_validas": 38,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 33
     },
@@ -313,6 +389,9 @@
       "cobertura_completa": true,
       "media_mm": 8.21,
       "maxima_mm": 34.99,
+      "minima_mm": 3.2,
+      "suma_celdas": 349.76,
+      "celdas_validas": 39,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 49
     },
@@ -324,6 +403,9 @@
       "cobertura_completa": true,
       "media_mm": 27.66,
       "maxima_mm": 109.96,
+      "minima_mm": 0.14,
+      "suma_celdas": 4510.67,
+      "celdas_validas": 177,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 26
     },
@@ -335,6 +417,9 @@
       "cobertura_completa": true,
       "media_mm": 32.88,
       "maxima_mm": 125.06,
+      "minima_mm": 0.01,
+      "suma_celdas": 3534.83,
+      "celdas_validas": 115,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 23
     },
@@ -346,6 +431,9 @@
       "cobertura_completa": true,
       "media_mm": 34.3,
       "maxima_mm": 112.52,
+      "minima_mm": 0.35,
+      "suma_celdas": 2692.19,
+      "celdas_validas": 81,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 21
     },
@@ -357,6 +445,9 @@
       "cobertura_completa": true,
       "media_mm": 16.27,
       "maxima_mm": 51.93,
+      "minima_mm": 0.19,
+      "suma_celdas": 1736.53,
+      "celdas_validas": 100,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 34
     },
@@ -368,6 +459,9 @@
       "cobertura_completa": true,
       "media_mm": 50.85,
       "maxima_mm": 107.94,
+      "minima_mm": 14.87,
+      "suma_celdas": 4970.47,
+      "celdas_validas": 96,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 9
     },
@@ -379,6 +473,9 @@
       "cobertura_completa": true,
       "media_mm": 15.57,
       "maxima_mm": 63.73,
+      "minima_mm": 1.6,
+      "suma_celdas": 910.15,
+      "celdas_validas": 66,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 35
     },
@@ -390,6 +487,9 @@
       "cobertura_completa": true,
       "media_mm": 29.16,
       "maxima_mm": 91.38,
+      "minima_mm": 5.78,
+      "suma_celdas": 1291.43,
+      "celdas_validas": 42,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 24
     },
@@ -401,6 +501,9 @@
       "cobertura_completa": true,
       "media_mm": 1.48,
       "maxima_mm": 14.38,
+      "minima_mm": 0.0,
+      "suma_celdas": 53.88,
+      "celdas_validas": 38,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 61
     },
@@ -412,6 +515,9 @@
       "cobertura_completa": true,
       "media_mm": 4.19,
       "maxima_mm": 20.43,
+      "minima_mm": 0.0,
+      "suma_celdas": 272.88,
+      "celdas_validas": 66,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 53
     },
@@ -423,6 +529,9 @@
       "cobertura_completa": true,
       "media_mm": 14.02,
       "maxima_mm": 94.89,
+      "minima_mm": 0.01,
+      "suma_celdas": 1159.33,
+      "celdas_validas": 60,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 39
     },
@@ -434,6 +543,9 @@
       "cobertura_completa": true,
       "media_mm": 14.21,
       "maxima_mm": 105.99,
+      "minima_mm": 0.0,
+      "suma_celdas": 843.16,
+      "celdas_validas": 68,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 37
     },
@@ -445,6 +557,9 @@
       "cobertura_completa": true,
       "media_mm": 10.78,
       "maxima_mm": 63.73,
+      "minima_mm": 0.0,
+      "suma_celdas": 1050.52,
+      "celdas_validas": 95,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 45
     },
@@ -456,6 +571,9 @@
       "cobertura_completa": true,
       "media_mm": 24.8,
       "maxima_mm": 75.44,
+      "minima_mm": 4.75,
+      "suma_celdas": 1301.17,
+      "celdas_validas": 50,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 29
     },
@@ -467,6 +585,9 @@
       "cobertura_completa": true,
       "media_mm": 57.54,
       "maxima_mm": 105.16,
+      "minima_mm": 5.81,
+      "suma_celdas": 2516.38,
+      "celdas_validas": 45,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 8
     },
@@ -478,6 +599,9 @@
       "cobertura_completa": true,
       "media_mm": 38.27,
       "maxima_mm": 61.88,
+      "minima_mm": 8.21,
+      "suma_celdas": 661.36,
+      "celdas_validas": 18,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 17
     },
@@ -489,6 +613,9 @@
       "cobertura_completa": true,
       "media_mm": 47.78,
       "maxima_mm": 112.52,
+      "minima_mm": 16.65,
+      "suma_celdas": 1372.02,
+      "celdas_validas": 28,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 11
     },
@@ -500,6 +627,9 @@
       "cobertura_completa": true,
       "media_mm": 80.47,
       "maxima_mm": 113.46,
+      "minima_mm": 30.58,
+      "suma_celdas": 2176.63,
+      "celdas_validas": 29,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 2
     },
@@ -511,6 +641,9 @@
       "cobertura_completa": true,
       "media_mm": 38.16,
       "maxima_mm": 162.14,
+      "minima_mm": 2.64,
+      "suma_celdas": 7061.83,
+      "celdas_validas": 171,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 18
     },
@@ -522,6 +655,9 @@
       "cobertura_completa": true,
       "media_mm": 10.21,
       "maxima_mm": 52.84,
+      "minima_mm": 0.09,
+      "suma_celdas": 893.93,
+      "celdas_validas": 86,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 46
     },
@@ -533,6 +669,9 @@
       "cobertura_completa": true,
       "media_mm": 88.66,
       "maxima_mm": 190.52,
+      "minima_mm": 22.72,
+      "suma_celdas": 5321.25,
+      "celdas_validas": 62,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 1
     },
@@ -544,6 +683,9 @@
       "cobertura_completa": true,
       "media_mm": 10.81,
       "maxima_mm": 52.66,
+      "minima_mm": 1.07,
+      "suma_celdas": 740.96,
+      "celdas_validas": 61,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 44
     },
@@ -555,6 +697,9 @@
       "cobertura_completa": true,
       "media_mm": 20.46,
       "maxima_mm": 60.17,
+      "minima_mm": 2.26,
+      "suma_celdas": 1432.57,
+      "celdas_validas": 67,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 32
     },
@@ -566,6 +711,9 @@
       "cobertura_completa": true,
       "media_mm": 43.08,
       "maxima_mm": 158.64,
+      "minima_mm": 2.02,
+      "suma_celdas": 2864.35,
+      "celdas_validas": 63,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 14
     },
@@ -577,6 +725,9 @@
       "cobertura_completa": true,
       "media_mm": 35.27,
       "maxima_mm": 131.35,
+      "minima_mm": 3.06,
+      "suma_celdas": 3195.87,
+      "celdas_validas": 93,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 20
     },
@@ -588,6 +739,9 @@
       "cobertura_completa": true,
       "media_mm": 9.67,
       "maxima_mm": 71.66,
+      "minima_mm": 0.0,
+      "suma_celdas": 1263.5,
+      "celdas_validas": 117,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 47
     },
@@ -599,6 +753,9 @@
       "cobertura_completa": true,
       "media_mm": 43.35,
       "maxima_mm": 109.96,
+      "minima_mm": 2.75,
+      "suma_celdas": 3728.49,
+      "celdas_validas": 88,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 13
     },
@@ -610,6 +767,9 @@
       "cobertura_completa": true,
       "media_mm": 23.51,
       "maxima_mm": 67.04,
+      "minima_mm": 0.04,
+      "suma_celdas": 2405.55,
+      "celdas_validas": 99,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 31
     },
@@ -621,6 +781,9 @@
       "cobertura_completa": true,
       "media_mm": 41.41,
       "maxima_mm": 145.06,
+      "minima_mm": 0.36,
+      "suma_celdas": 5575.68,
+      "celdas_validas": 144,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 15
     },
@@ -632,6 +795,9 @@
       "cobertura_completa": true,
       "media_mm": 27.01,
       "maxima_mm": 88.38,
+      "minima_mm": 4.84,
+      "suma_celdas": 2358.52,
+      "celdas_validas": 86,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 27
     },
@@ -643,6 +809,9 @@
       "cobertura_completa": true,
       "media_mm": 34.2,
       "maxima_mm": 77.09,
+      "minima_mm": 8.59,
+      "suma_celdas": 1984.74,
+      "celdas_validas": 55,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 22
     },
@@ -654,6 +823,9 @@
       "cobertura_completa": true,
       "media_mm": 2.93,
       "maxima_mm": 22.13,
+      "minima_mm": 0.0,
+      "suma_celdas": 384.43,
+      "celdas_validas": 90,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 57
     },
@@ -665,6 +837,9 @@
       "cobertura_completa": true,
       "media_mm": 7.05,
       "maxima_mm": 77.05,
+      "minima_mm": 0.0,
+      "suma_celdas": 3171.08,
+      "celdas_validas": 444,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 50
     },
@@ -676,6 +851,9 @@
       "cobertura_completa": true,
       "media_mm": 14.28,
       "maxima_mm": 51.51,
+      "minima_mm": 0.0,
+      "suma_celdas": 3807.36,
+      "celdas_validas": 248,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 36
     },
@@ -687,6 +865,9 @@
       "cobertura_completa": true,
       "media_mm": 11.08,
       "maxima_mm": 48.96,
+      "minima_mm": 0.02,
+      "suma_celdas": 2066.36,
+      "celdas_validas": 192,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 43
     },
@@ -698,6 +879,9 @@
       "cobertura_completa": true,
       "media_mm": 12.22,
       "maxima_mm": 46.47,
+      "minima_mm": 0.0,
+      "suma_celdas": 1888.59,
+      "celdas_validas": 155,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 41
     },
@@ -709,6 +893,9 @@
       "cobertura_completa": true,
       "media_mm": 9.54,
       "maxima_mm": 36.67,
+      "minima_mm": 0.0,
+      "suma_celdas": 1524.61,
+      "celdas_validas": 150,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 48
     },
@@ -720,6 +907,9 @@
       "cobertura_completa": true,
       "media_mm": 14.07,
       "maxima_mm": 35.57,
+      "minima_mm": 1.87,
+      "suma_celdas": 697.69,
+      "celdas_validas": 47,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 38
     },
@@ -731,6 +921,9 @@
       "cobertura_completa": true,
       "media_mm": 0.79,
       "maxima_mm": 8.26,
+      "minima_mm": 0.0,
+      "suma_celdas": 124.44,
+      "celdas_validas": 146,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 67
     },
@@ -742,6 +935,9 @@
       "cobertura_completa": true,
       "media_mm": 1.06,
       "maxima_mm": 1.91,
+      "minima_mm": 0.24,
+      "suma_celdas": 25.23,
+      "celdas_validas": 24,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 65
     },
@@ -753,6 +949,9 @@
       "cobertura_completa": true,
       "media_mm": 0.74,
       "maxima_mm": 3.56,
+      "minima_mm": 0.01,
+      "suma_celdas": 25.6,
+      "celdas_validas": 32,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 68
     },
@@ -764,6 +963,9 @@
       "cobertura_completa": true,
       "media_mm": 1.6,
       "maxima_mm": 2.12,
+      "minima_mm": 0.18,
+      "suma_celdas": 20.91,
+      "celdas_validas": 16,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 60
     },
@@ -775,6 +977,9 @@
       "cobertura_completa": true,
       "media_mm": 36.48,
       "maxima_mm": 161.82,
+      "minima_mm": 0.04,
+      "suma_celdas": 15802.83,
+      "celdas_validas": 455,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 19
     },
@@ -786,6 +991,9 @@
       "cobertura_completa": true,
       "media_mm": 2.66,
       "maxima_mm": 15.94,
+      "minima_mm": 0.08,
+      "suma_celdas": 293.86,
+      "celdas_validas": 95,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 58
     }
@@ -799,6 +1007,9 @@
       "cobertura_completa": true,
       "media_mm": 88.66,
       "maxima_mm": 190.52,
+      "minima_mm": 22.72,
+      "suma_celdas": 5321.25,
+      "celdas_validas": 62,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 1
     },
@@ -810,6 +1021,9 @@
       "cobertura_completa": true,
       "media_mm": 80.47,
       "maxima_mm": 113.46,
+      "minima_mm": 30.58,
+      "suma_celdas": 2176.63,
+      "celdas_validas": 29,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 2
     },
@@ -821,6 +1035,9 @@
       "cobertura_completa": true,
       "media_mm": 80.1,
       "maxima_mm": 143.6,
+      "minima_mm": 29.51,
+      "suma_celdas": 2322.8,
+      "celdas_validas": 32,
       "cobertura_valida_pct": 100.0,
       "posicion_relativa": 3
     }
