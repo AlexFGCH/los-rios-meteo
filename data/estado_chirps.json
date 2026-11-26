@@ -1,8 +1,8 @@
 {
-  "fuente": "chirps",
-  "estado": "error",
-  "intento": "2026-11-25T21:09:59.863243-05:00",
+  "fuente": "CHIRPS v3 SAT",
+  "estado": "completo",
+  "intento": "2026-11-25T21:24:08.551847-05:00",
   "fecha_producto": "2026-11-20",
   "estado_producto": "preliminar",
-  "mensaje": "Error durante la actualizacion; se conserva el ultimo periodo completo. Revisar Actions."
+  "mensaje": "Ultima fecha publicada por CHC. Acumulado diario con etiqueta UTC, no 07h00-07h00 Ecuador."
 }
