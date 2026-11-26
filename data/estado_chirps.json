@@ -1,7 +1,7 @@
 {
   "fuente": "chirps",
   "estado": "error",
-  "intento": "2026-11-26T10:57:42.757606-05:00",
+  "intento": "2026-11-26T11:46:12.321157-05:00",
   "fecha_producto": "2026-11-20",
   "estado_producto": "preliminar",
   "mensaje": "Error durante la actualizacion; se conserva el ultimo periodo completo. Revisar Actions."
