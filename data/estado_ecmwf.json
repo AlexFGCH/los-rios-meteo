@@ -1,7 +1,7 @@
 {
   "fuente": "ECMWF IFS",
   "estado": "completo",
-  "intento": "2026-11-26T15:39:20.690228-05:00",
+  "intento": "2026-11-26T16:06:31.028150-05:00",
   "inicializacion": "2026-11-25T12:00:00.000Z",
   "corrida_anterior": true,
   "periodos": [
