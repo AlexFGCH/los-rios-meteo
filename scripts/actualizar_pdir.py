@@ -33,10 +33,10 @@ def crop_indices(extent):
 def main():
     now=datetime.now(LOCAL);day=os.environ.get('FECHA_FIN','').strip() or now.date().isoformat()
     start,end,slots=period(day)
-    if end>now:raise RuntimeError('El periodo aun no termina.')
     data=ROOT/'data';folder=data/'pdir';folder.mkdir(parents=True,exist_ok=True)
     status={'fuente':'PDIR-Now CHRS','intento':now.isoformat(),'fecha_fin_solicitada':day}
-    if (folder/(day+'.json')).exists():
+    previo=json.loads((folder/(day+'.json')).read_text()) if (folder/(day+'.json')).exists() else {}
+    if previo.get('intervalos')==24:
         actualizar_guardado(folder,day)
         status.update(estado='completo',mensaje='24 intervalos completos; simbologia actualizada.')
         save_json(data/'estado_pdir.json',status);return
@@ -47,6 +47,7 @@ def main():
     total=np.zeros((r1-r0,c1-c0),dtype='float64');valid=np.ones(total.shape,dtype=bool)
     source_names=[];missing=[];session=requests.Session()
     for i,s in enumerate(slots,1):
+        if s+timedelta(hours=1)>now.astimezone(timezone.utc):break
         name=s.strftime('pdirnow1h%y%m%d%H.bin.gz');url=BASE+f'{s.year}/'+name
         response=None
         for attempt in range(3):
@@ -57,23 +58,34 @@ def main():
             except requests.RequestException:
                 if attempt==2:raise RuntimeError('No se pudo acceder a CHRS; se conservaran resultados anteriores.') from None
                 time.sleep(3)
-        if response.status_code==404:missing.append(name);continue
+        if response.status_code==404:
+            missing.append(name);break  # Solo prefijo continuo desde las 07h00; nunca saltar huecos.
         try:raw=gzip.decompress(response.content)
         except (OSError,EOFError):raise RuntimeError('CHRS no devolvio un gzip valido: '+name) from None
         if len(raw)!=3000*9000*2:raise RuntimeError('Tamano inesperado para PDIR horario int16: '+name)
         a=np.frombuffer(raw,dtype='<i2').reshape(3000,9000)[r0:r1,c0:c1].astype('float64')
         ok=a>=0;valid &= ok;total+=np.where(ok,a/100.,0.)
         source_names.append(name);print(f'PDIR intervalo {i}/24 verificado',flush=True)
-    if missing:
-        status.update(estado='pendiente',mensaje=f'Faltan {len(missing)} de 24 horas; se conserva el ultimo periodo completo.',faltantes=missing)
+    horas=len(source_names)
+    if horas<22:
+        status.update(estado='pendiente',mensaje=f'Disponibles {horas}/24 horas consecutivas; se requieren al menos 22. Se conserva el ultimo resultado.',faltantes=missing)
         save_json(data/'estado_pdir.json',status);print(status['mensaje']);return
+    if previo.get('intervalos',0)>horas:
+        status.update(estado=previo.get('estado_acumulado','parcial'),mensaje='Se conserva el resultado anterior, que contiene mas horas.',horas_acumuladas=previo['intervalos'])
+        save_json(data/'estado_pdir.json',status);return
+    if previo.get('intervalos')==horas:
+        status.update(estado='parcial',mensaje=f'Parcial: {horas}/24 horas; sin nuevos intervalos.',horas_acumuladas=horas)
+        save_json(data/'estado_pdir.json',status);return
+    end=start+timedelta(hours=horas)
+    estado='completo' if horas==24 else 'parcial'
+    work=ROOT/'.cache/pdir_salidas'/day;work.mkdir(parents=True,exist_ok=True)
     inside=geometry_mask([mapping(area)],out_shape=total.shape,transform=grid,invert=True)
     if not np.any(valid & inside):raise RuntimeError('Sin pixels validos en el limite.')
     display=valid & inside
     output=np.where(display,total,NODATA).astype('float32')
-    tif=folder/(day+'.tif')
+    tif=work/(day+'.tif')
     with rasterio.open(tif,'w',driver='GTiff',width=total.shape[1],height=total.shape[0],count=1,dtype='float32',crs='EPSG:4326',transform=grid,nodata=NODATA,compress='lzw') as dst:
-        dst.write(output,1);dst.set_band_unit(1,'mm');dst.update_tags(inicio=start.isoformat(),fin=end.isoformat(),fuente='PDIR-Now horario CHRS',intervalos='24')
+        dst.write(output,1);dst.set_band_unit(1,'mm');dst.update_tags(inicio=start.isoformat(),fin=end.isoformat(),fuente='PDIR-Now horario CHRS',intervalos=str(horas),estado_acumulado=estado,fin_objetivo=period(day)[1].isoformat())
     # Media ponderada por area de interseccion de cada celda nativa con el canton.
     project=Transformer.from_crs(4326,32717,always_xy=True).transform
     cells=[]
@@ -95,16 +107,18 @@ def main():
         stats.append({**f['properties'],'media_mm':round(numerator/denominator,2) if denominator and coverage>=.999 else None,
             'maxima_mm':round(maxval,2) if maxval is not None and coverage>=.999 else None,
             'cobertura_valida_pct':round(100*coverage,2),'celdas':count})
-    legend=dibujar_jenks(total,display,folder/(day+'.png'))
+    legend=dibujar_jenks(total,display,work/(day+'.png'))
     left,top=grid*(0,0);right,bottom=grid*(total.shape[1],total.shape[0])
     result={'fuente':'PDIR-Now CHRS','fecha_fin':day,'inicio':start.isoformat(),'fin':end.isoformat(),
-        'generado':now.isoformat(),'intervalos':24,'unidad':'mm','bounds':[[bottom,left],[top,right]],
+        'generado':now.isoformat(),'producto':'pdir','estado_acumulado':estado,'horas_acumuladas':horas,'fin_objetivo':period(day)[1].isoformat(),'intervalos':horas,'unidad':'mm','bounds':[[bottom,left],[top,right]],
         'imagen':f'data/pdir/{day}.png','raster':f'data/pdir/{day}.tif',
         'resolucion':'0.04 grados (aprox. 4.4 km)','metodo_media':'Ponderada por area de interseccion con celdas nativas; solo cobertura completa.',
         'metodo_maxima':'Mayor acumulado entre celdas nativas con interseccion de area positiva.',
         'leyenda':legend,'cantones':stats,'originales':source_names}
-    save_json(folder/(day+'.json'),result)
-    status.update(estado='completo',mensaje='24 intervalos procesados.',fecha_fin=day)
+    save_json(work/(day+'.json'),result)
+    for extension in ['.tif','.png','.json']:
+        (work/(day+extension)).replace(folder/(day+extension))
+    status.update(estado=estado,mensaje=f'{estado.capitalize()}: {horas}/24 horas procesadas.',fecha_fin=day,horas_acumuladas=horas,inicio=start.isoformat(),fin=end.isoformat())
     save_json(data/'estado_pdir.json',status)
-    print('PDIR: acumulado y estadisticas completos.')
+    print(f'PDIR: {estado}, {horas}/24 horas; acumulado y estadisticas guardados.')
 if __name__=='__main__':main()

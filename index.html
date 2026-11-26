@@ -67,7 +67,9 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
  document.getElementById('buffer').addEventListener('change',e=>e.target.checked?buffer.addTo(map):map.removeLayer(buffer));
  document.getElementById('reset').addEventListener('click',()=>{province.value='';search.value='';filter(false);map.fitBounds(allBounds,{padding:[15,15]})});
  const legend=L.control({position:'bottomright'});legend.onAdd=()=>{let d=L.DomUtil.create('div','legend');d.innerHTML='<strong>Límites territoriales</strong><br><i class="swatch" style="background:#257854"></i>Los Ríos<br><i class="swatch" style="background:#b7872b"></i>Bolívar<br><i class="swatch" style="background:#849bab"></i>Otros territorios';L.DomEvent.disableClickPropagation(d);return d};legend.addTo(map);
- function periodText(d){if(d.tipo==='pronostico')return 'Fecha del servicio: '+d.fecha_servicio.replace('T',' ').replace('.000Z',' UTC')+' · Inicialización: '+d.inicializacion.replace('T',' ').replace('.000Z',' UTC')+' · '+d.convencion_temporal;return d.fecha_producto?'Día '+d.fecha_producto+' · '+d.estado_producto+' · etiqueta diaria UTC; no corresponde a 07h00–07h00 Ecuador':d.inicio.slice(0,10)+' 07h00 a '+d.fin.slice(0,10)+' 07h00 Ecuador · '+d.intervalos+' intervalos completos';}
+ function estadoPDIR(d){return (d.intervalos===24?'Completo':'Parcial')+' · '+d.intervalos+'/24 horas';}
+ function periodoPDIR(d){return d.inicio.slice(0,16).replace('T',' ')+' → '+d.fin.slice(0,16).replace('T',' ')+' Ecuador · '+estadoPDIR(d);}
+ function periodText(d){if(d.producto==='pdir'||d.fuente?.startsWith('PDIR-Now'))return periodoPDIR(d);if(d.tipo==='pronostico')return 'Fecha del servicio: '+d.fecha_servicio.replace('T',' ').replace('.000Z',' UTC')+' · Inicialización: '+d.inicializacion.replace('T',' ').replace('.000Z',' UTC')+' · '+d.convencion_temporal;return d.fecha_producto?'Día '+d.fecha_producto+' · '+d.estado_producto+' · etiqueta diaria UTC; no corresponde a 07h00–07h00 Ecuador':d.inicio.slice(0,10)+' 07h00 a '+d.fin.slice(0,10)+' 07h00 Ecuador · '+d.intervalos+' intervalos completos';}
  function hoverText(p,data,source){
   const name='<strong>'+esc(p.canton)+'</strong>';
   if(!data||data.tipo==='pronostico'||!['imerg','pdir','chirps'].includes(source))return name;
@@ -94,7 +96,7 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
  }
 
  if(!legend?.colores||!legend?.rangos){d.textContent='Actualizando simbología. Espera a que termine el flujo de GitHub.';return d;}
- d.innerHTML='<strong>Acumulado estimado (mm)</strong><br>'+legend.rangos.map((v,i)=>'<span class="swatch" style="background:'+(/^#[0-9a-f]{6}$/i.test(legend.colores[i])?legend.colores[i]:'#cccccc')+'"></span>'+esc(v)).join('<br>')+'<br>Sin color: fuera de cobertura o sin datos.<br>'+esc(legend.nota||'');return d};
+ d.innerHTML='<strong>Acumulado estimado (mm)</strong>'+(src.value==='pdir'?'<br><strong>'+esc(estadoPDIR(weatherData))+'</strong>':'')+'<br>'+legend.rangos.map((v,i)=>'<span class="swatch" style="background:'+(/^#[0-9a-f]{6}$/i.test(legend.colores[i])?legend.colores[i]:'#cccccc')+'"></span>'+esc(v)).join('<br>')+'<br>Sin color: fuera de cobertura o sin datos.<br>'+esc(legend.nota||'');return d};
  function clearRain(){layer.eachLayer(l=>l.closeTooltip());weatherData=null;if(rainLayer){map.removeLayer(rainLayer);rainLayer=null;}rainLegend.remove();}
  async function loadRain(){
   const token=++requestId;clearRain();
@@ -106,8 +108,13 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
   try{
    const response=await fetch('data/'+src.value+'/'+encodeURIComponent(day)+'.json',{cache:'no-store'});if(!response.ok)throw Error();
    const d=await response.json();if(token!==requestId)return;
-   if(d.intervalos!==({imerg:48,pdir:24,chirps:1,wrf:1}[src.value])||d.unidad!=='mm')throw Error();weatherData=d;
-   rainLayer=L.imageOverlay(d.imagen,d.bounds,{pane:'rain',opacity:0.85,interactive:false}).addTo(map);
+   if(d.unidad!=='mm')throw Error();
+   if(src.value==='pdir'){
+    if(![22,23,24].includes(d.intervalos)||(Date.parse(d.fin)-Date.parse(d.inicio))/3600000!==d.intervalos)throw Error();
+   }else if(d.intervalos!==({imerg:48,chirps:1,wrf:1}[src.value]))throw Error();
+   weatherData=d;
+   if(src.value==='pdir'&&dates.selectedIndex>=0)dates.options[dates.selectedIndex].textContent=periodoPDIR(d);
+   rainLayer=L.imageOverlay(d.imagen+'?generado='+encodeURIComponent(d.generado),d.bounds,{pane:'rain',opacity:0.85,interactive:false}).addTo(map);
    rainLayer.on('error',()=>{if(token===requestId)status.textContent='No pudo cargarse la imagen del acumulado. Revisa la publicación.'});rainLegend.addTo(map);
    if(d.tipo==='pronostico'){const names=(d.destacados||[]).map(p=>esc(p.canton)+' ('+esc(p.provincia)+')');document.getElementById('details').innerHTML='<h2>Cantones donde se prevé mayor precipitación</h2><p>'+(names.join(' · ')||'No se identificaron cantones con lluvia prevista y cobertura completa.')+'</p><p class="subtle">Comparación por media territorial entre los cantones del área de estudio. Selecciona un cantón para consultar su posición relativa. Los colores cambian con cada fecha; no son niveles de amenaza.</p>';}
    status.textContent=d.fuente+' · '+periodText(d)+' · Procesado: '+d.generado.slice(0,16).replace('T',' ')+' (UTC-5).'+(lastState&&lastState.estado!=='completo'?' Último intento: '+lastState.mensaje:'');
@@ -251,7 +258,7 @@ filas.sort((a, b) => {
 
   const registros = [
     ['Cantón', 'Máxima (mm)', 'Media (mm)', 'Provincia',
-     'Fuente', 'Inicio', 'Fin'],
+     'Fuente', 'Inicio', 'Fin', 'Estado', 'Horas acumuladas'],
     ...filas.map(f => [
       f.canton,
       numero(f.maxima_mm),
@@ -259,7 +266,9 @@ filas.sort((a, b) => {
       f.provincia,
       weatherData.fuente,
       weatherData.inicio || '',
-      weatherData.fin || ''
+      weatherData.fin || '',
+      weatherData.estado_acumulado || 'completo',
+      (Date.parse(weatherData.fin)-Date.parse(weatherData.inicio))/3600000
     ])
   ];
 
@@ -281,7 +290,7 @@ filas.sort((a, b) => {
 
   enlace.href = url;
   enlace.download = 'Precipitacion_' + src.value + '_' +
-    nombreSeguro + '_' + dates.value + '.csv';
+    nombreSeguro + '_' + dates.value + (src.value==='pdir'?'_'+weatherData.intervalos+'h_'+(weatherData.intervalos===24?'completo':'parcial'):'') + '.csv';
   document.body.appendChild(enlace);
   enlace.click();
   enlace.remove();

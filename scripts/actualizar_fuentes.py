@@ -5,7 +5,7 @@ from datetime import datetime,timedelta,timezone
 ROOT=Path(__file__).resolve().parents[1];DATA=ROOT/'data';DATA.mkdir(exist_ok=True)
 def horario_habilitado(fuente, ahora):
     hora_ecuador=ahora.astimezone(timezone(timedelta(hours=-5))).hour
-    inicio={'pdir':8,'imerg':11}.get(fuente,0)
+    inicio={'pdir':6,'imerg':11}.get(fuente,0)
     return hora_ecuador>=inicio
 
 for key,script,statusfile in [('imerg','actualizar_imerg.py','estado.json'),('pdir','actualizar_pdir.py','estado_pdir.json'),('chirps','actualizar_chirps.py','estado_chirps.json'),('wrf','actualizar_wrf.py','estado_wrf.json')]:
