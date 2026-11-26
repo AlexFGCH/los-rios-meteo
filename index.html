@@ -58,12 +58,11 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
  const legend=L.control({position:'bottomright'});legend.onAdd=()=>{let d=L.DomUtil.create('div','legend');d.innerHTML='<strong>Límites territoriales</strong><br><i class="swatch" style="background:#257854"></i>Los Ríos<br><i class="swatch" style="background:#b7872b"></i>Bolívar<br><i class="swatch" style="background:#849bab"></i>Otros territorios';L.DomEvent.disableClickPropagation(d);return d};legend.addTo(map);
  function periodText(d){if(d.tipo==='pronostico')return 'Fecha del servicio: '+d.fecha_servicio.replace('T',' ').replace('.000Z',' UTC')+' · Inicialización: '+d.inicializacion.replace('T',' ').replace('.000Z',' UTC')+' · '+d.convencion_temporal;return d.fecha_producto?'Día '+d.fecha_producto+' · '+d.estado_producto+' · etiqueta diaria UTC; no corresponde a 07h00–07h00 Ecuador':d.inicio.slice(0,10)+' 07h00 a '+d.fin.slice(0,10)+' 07h00 Ecuador · '+d.intervalos+' intervalos completos';}
  function hoverText(p,data,source){
-  const names='<strong>'+esc(p.canton)+'</strong><br>'+esc(p.provincia);
-  if(!data||data.tipo==='pronostico'||!['imerg','pdir','chirps'].includes(source))return names;
+  const name='<strong>'+esc(p.canton)+'</strong>';
+  if(!data||data.tipo==='pronostico'||!['imerg','pdir','chirps'].includes(source))return name;
   const item=data.cantones?.find(s=>String(s.codigo)===String(p.codigo));
-  const context='<br><small>'+esc(data.fuente)+' · '+esc(data.fecha_producto||data.fecha_fin||'')+'</small>';
-  if(!item||typeof item.media_mm!=='number'||!Number.isFinite(item.media_mm)||typeof item.maxima_mm!=='number'||!Number.isFinite(item.maxima_mm))return names+context+'<br>Sin cobertura completa';
-  return names+context+'<br>Precipitación media: <strong>'+item.media_mm.toFixed(2)+' mm</strong><br>Precipitación máxima de celda: <strong>'+item.maxima_mm.toFixed(2)+' mm</strong>';
+  if(!item||typeof item.media_mm!=='number'||!Number.isFinite(item.media_mm)||typeof item.maxima_mm!=='number'||!Number.isFinite(item.maxima_mm))return name+'<br>Sin datos completos';
+  return name+'<br>Precipitación media: <strong>'+item.media_mm.toFixed(2)+' mm</strong><br>Precipitación máxima: <strong>'+item.maxima_mm.toFixed(2)+' mm</strong>';
  }
  function rainInfo(code){
   if(!weatherData)return '<p class="subtle">No hay un acumulado conectado para esta selección.</p>';
