@@ -84,6 +84,7 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
   if(selected)selected.setStyle(baseStyle(selected.feature));selected=l;
   l.setStyle({color:'#173c2a',weight:3,fillOpacity:.4});l.bringToFront();map.fitBounds(l.getBounds(),{padding:[25,25],maxZoom:12});
   const p=f.properties;
+  actualizarLeyendaProvincias();
   document.getElementById('details').innerHTML='<div class="subtle">'+esc(p.provincia)+'</div><h2 style="margin-top:4px">'+esc(p.canton)+'</h2>'+rainInfo(p.codigo);
  }
  function filter(fit=true){
@@ -102,6 +103,20 @@ if(!window.L){document.getElementById('map').innerHTML='<div class="error">No se
  const legend = L.control({position:'bottomright'});
 
 legend.onAdd = () => {
+   if (selected) {
+    const p = selected.feature.properties;
+    const d = L.DomUtil.create('div', 'legend');
+    const provinciaActual = provinciasMapa.find(
+      ([codigo]) => codigo === p.provincia
+    );
+    d.innerHTML =
+      '<strong>Provincia</strong><br>' +
+      esc(provinciaActual ? provinciaActual[1] : p.provincia) +
+      '<br><strong style="display:block;margin-top:8px">Cantón</strong>' +
+      esc(p.canton);
+    L.DomEvent.disableClickPropagation(d);
+    return d;
+  }
   const d = L.DomUtil.create('div','legend');
 
   const provinciasVisibles = province.value
