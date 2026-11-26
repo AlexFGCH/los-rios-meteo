@@ -157,7 +157,7 @@ function pdf(canvas){
  const start=length;add('xref\n0 6\n0000000000 65535 f \n');for(let i=1;i<=5;i++)add(String(offsets[i]).padStart(10,'0')+' 00000 n \n');
  add('trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n'+start+'\n%%EOF');return new Blob(chunks,{type:'application/pdf'});
 }
-async function png(canvas){
+async function crearPNG(canvas){
  const original=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('No se pudo crear el PNG.')),'image/png'));
  const raw=new Uint8Array(await original.arrayBuffer()),view=new DataView(raw.buffer),parts=[raw.slice(0,8)];
  const chunk=new Uint8Array(21),v=new DataView(chunk.buffer);v.setUint32(0,9);chunk.set([112,72,89,115],4);v.setUint32(8,11811);v.setUint32(12,11811);chunk[16]=1;
@@ -182,7 +182,7 @@ function install({obtener,fuente,provincia,despues,estado,detalles,selectProvinc
   if(busy)return;const data=obtener(),source=fuente(),area=scope.value;if(!data)return;
   busy=true;refresh();message.textContent='Preparando mapa de '+(area==='losrios'?'Los Ríos':'toda el área')+'…';
   try{await new Promise(r=>setTimeout(r,30));const canvas=await render({data,source,scope:area});
-   const blob=format==='pdf'?pdf(canvas):await png(canvas);
+   const blob=format==='pdf'?pdf(canvas):await crearPNG(canvas);
    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename(data,source,area)+'.'+format;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);message.textContent='Mapa listo.';
   }catch(e){message.textContent='No se pudo generar el mapa. '+e.message;}
   finally{busy=false;refresh();}
@@ -191,5 +191,5 @@ function install({obtener,fuente,provincia,despues,estado,detalles,selectProvinc
  const obs=new MutationObserver(refresh);obs.observe(estado,{childList:true,subtree:true,characterData:true});obs.observe(detalles,{childList:true,subtree:true});
  selectProvincia.addEventListener('change',syncScope);reset.addEventListener('click',syncScope);syncScope();
 }
-global.MeteoMapas={renderizar:render,pdf,png,instalar:install,utm,periodo:period,nombreArchivo:filename};
+global.MeteoMapas={renderizar:render,pdf,png:crearPNG,instalar:install,utm,periodo:period,nombreArchivo:filename};
 })(typeof window!=='undefined'?window:globalThis);
