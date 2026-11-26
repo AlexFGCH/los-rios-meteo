@@ -142,7 +142,7 @@ document.getElementById('reset').addEventListener(
  function rainInfo(code){
   if(!weatherData)return '<p class="subtle">No hay un acumulado conectado para esta selección.</p>';
   const s=weatherData.cantones.find(s=>s.codigo===code);
-  if(weatherData.tipo==='pronostico')return '<p><strong>Pronóstico '+esc(weatherData.modelo||'WRF')+'</strong></p><p>'+(!s?.cobertura_completa?'Sin cobertura completa para este cantón.':s.posicion_relativa?'Posición relativa de precipitación prevista: '+Number(s.posicion_relativa)+'.':'Sin clasificación disponible.')+'</p><p class="subtle">La comparación utiliza la media territorial del modelo. '+esc(periodText(weatherData))+'. Resolución: '+esc(weatherData.resolucion)+'.</p>';
+  if(weatherData.tipo==='pronostico')return '<p><strong>Pronóstico '+esc(weatherData.modelo||'WRF')+'</strong></p><p>'+esc(periodText(weatherData))+'</p>';
   if(!s||s.media_mm===null)return '<p class="subtle">Sin cobertura completa para este cantón.</p>';
   const zona = weatherData.fecha_producto ? 'UTC' : 'America/Guayaquil';
   const fechaHora = valor => new Date(valor).toLocaleString('es-EC', {
