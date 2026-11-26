@@ -290,11 +290,14 @@ csvPanel.innerHTML = `
   <p>Selecciona un cantón en el mapa o una provincia en el selector.</p>
   <button id="csvCanton" type="button" disabled>Descargar cantón CSV</button>
   <button id="csvProvincia" type="button" disabled>Descargar provincia CSV</button>
+  <button id="csvTodoWRF" type="button" hidden disabled>Descargar toda el área CSV</button>
 `;
 document.getElementById('details').after(csvPanel);
 
 const csvCanton = document.getElementById('csvCanton');
 const csvProvincia = document.getElementById('csvProvincia');
+const csvTodoWRF = document.getElementById('csvTodoWRF');
+function estadisticasCSVListas(){return src.value==='wrf' ? weatherData?.estadisticas_csv_version===2 : weatherData?.estadisticas_csv_version===1;}
 
 function csvDisponible() {
   return weatherData && ['imerg', 'pdir', 'chirps', 'wrf', 'ecmwf'].includes(src.value);
@@ -303,15 +306,17 @@ function csvDisponible() {
 function actualizarBotonesCSV() {
   const disponible = Boolean(csvDisponible());
   const esPronostico = ['wrf','ecmwf'].includes(src.value);
-  const listo = disponible && (!esPronostico || weatherData.estadisticas_csv_version === 1);
+  const listo = disponible && (!esPronostico || estadisticasCSVListas());
   csvPanel.hidden = !disponible;
   csvCanton.hidden = esPronostico;
   csvCanton.disabled = !listo || !selected || esPronostico;
   csvProvincia.disabled = !listo || !province.value;
+  csvTodoWRF.hidden = src.value!=='wrf';
+  csvTodoWRF.disabled = !listo;
   csvPanel.querySelector('h2').textContent = esPronostico
     ? 'Descargar tabla del pronóstico '+(weatherData?.modelo||'WRF') : 'Descargar tabla de precipitación';
   csvPanel.querySelector('p').textContent = esPronostico
-    ? (listo ? 'Selecciona una provincia para descargar sus cantones.'
+    ? (listo ? (src.value==='wrf' ? 'Descarga una provincia o toda el área. Ver toda el área también descarga el CSV WRF.' : 'Selecciona una provincia para descargar sus cantones.')
        : 'Espera a que se actualicen las estadísticas del pronóstico para esta fecha.')
     : 'Selecciona un cantón en el mapa o una provincia en el selector.';
 }
@@ -319,14 +324,17 @@ function actualizarBotonesCSV() {
 function descargarCSV(alcance) {
   if (!csvDisponible()) return;
   const esPronostico = ['wrf','ecmwf'].includes(src.value);
-  if (esPronostico && (alcance !== 'provincia' || weatherData.estadisticas_csv_version !== 1)) return;
+  if (esPronostico && (!estadisticasCSVListas() || (alcance !== 'provincia' && !(src.value==='wrf' && alcance==='todo')))) return;
 
   let filas = weatherData.cantones.filter(
     f => /^\d{4}$/.test(String(f.codigo))
   );
   let nombre;
 
-  if (alcance === 'canton') {
+  if (alcance === 'todo') {
+    if(src.value!=='wrf')return;
+    nombre='Toda_el_area';
+  } else if (alcance === 'canton') {
     if (!selected) return;
     const codigo = String(selected.feature.properties.codigo);
     filas = filas.filter(f => String(f.codigo) === codigo);
@@ -357,6 +365,11 @@ const normalizarCanton = nombre => String(nombre)
   .toUpperCase();
 
 filas.sort((a, b) => {
+  if(alcance==='todo' && a.provincia!==b.provincia){
+    if(a.provincia==='LOS RÍOS')return -1;
+    if(b.provincia==='LOS RÍOS')return 1;
+    return a.provincia.localeCompare(b.provincia,'es');
+  }
   const nombreA = normalizarCanton(a.canton);
   const nombreB = normalizarCanton(b.canton);
   const indiceA = ordenCantones.indexOf(nombreA);
@@ -373,7 +386,10 @@ filas.sort((a, b) => {
       ? valor.toFixed(2)
       : '';
 
-  const registros = esPronostico ? [
+  const registros = src.value==='wrf' ? [
+    ['Modelo','Provincia','Cantón','Máxima (mm)','Media (mm)','Mínimo (mm)','Suma'],
+    ...filas.map(f=>['WRF',f.provincia,f.canton,numero(f.maxima_mm),numero(f.media_mm),numero(f.minima_mm),numero(f.suma_celdas)])
+  ] : esPronostico ? [
     ['Provincia', 'Cantón', 'Máxima (mm)', 'Media (mm)',
      'Fuente', 'Inicialización UTC', 'Fecha del servicio UTC', 'Inicio Ecuador', 'Fin Ecuador', 'Convención temporal'],
     ...filas.map(f => [
@@ -424,6 +440,10 @@ filas.sort((a, b) => {
 
 csvCanton.addEventListener('click', () => descargarCSV('canton'));
 csvProvincia.addEventListener('click', () => descargarCSV('provincia'));
+csvTodoWRF.addEventListener('click', () => descargarCSV('todo'));
+document.getElementById('reset').addEventListener('click', () => {
+  if(src.value==='wrf' && csvDisponible() && estadisticasCSVListas())descargarCSV('todo');
+});
 province.addEventListener('change', actualizarBotonesCSV);
 
 const observadorCSV = new MutationObserver(actualizarBotonesCSV);

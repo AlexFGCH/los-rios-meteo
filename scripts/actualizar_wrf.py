@@ -63,18 +63,22 @@ def process(session,init,date,zones,area):
         cells.append((transform(project,box(left,bottom,right,top)),float(values[row,col])))
     ranked=[];stats=[]
     for f in zones['features']:
-        geom=transform(project,shape(f['geometry']));numerator=denominator=0.;maxval=None
+        geom=transform(project,shape(f['geometry']));numerator=denominator=0.;maxval=minval=None;sumval=0.;count=0
         for cell,value in cells:
             if not geom.intersects(cell):continue
             overlap=geom.intersection(cell).area
             if overlap<=0:continue
             numerator+=value*overlap;denominator+=overlap
             maxval=value if maxval is None else max(maxval,value)
+            minval=value if minval is None else min(minval,value)
+            sumval+=value;count+=1
         coverage=min(1.,denominator/geom.area) if geom.area else 0.
         item={**f['properties'],'cobertura_completa':coverage>=.999,
           'media_mm':round(numerator/denominator,2) if denominator and coverage>=.999 else None,
           'maxima_mm':round(maxval,2) if maxval is not None and coverage>=.999 else None,
-          'cobertura_valida_pct':round(100*coverage,2)}
+          'minima_mm':round(minval,2) if minval is not None and coverage>=.999 else None,
+          'suma_celdas':round(sumval,2) if count and coverage>=.999 else None,
+          'celdas_validas':count,'cobertura_valida_pct':round(100*coverage,2)}
         stats.append(item)
         if denominator and coverage>=.999:ranked.append((numerator/denominator,item))
     ranked.sort(key=lambda p:(-p[0],str(p[1]['codigo'])))
@@ -91,13 +95,15 @@ def process(session,init,date,zones,area):
         top=[p for p in nonzero if p['posicion_relativa']<=threshold]
     legend=dibujar_stretched(values,display,folder/(key+'.png'))
     left,top_y=grid*(0,0);right,bottom=grid*(values.shape[1],values.shape[0])
-    result={'tipo':'pronostico','estadisticas_csv_version':1,'fuente':'WRF · servicio del visor INAMHI','fecha_fin':date.date().isoformat(),
+    result={'tipo':'pronostico','estadisticas_csv_version':2,'producto':'wrf','modelo':'WRF','fuente':'WRF · servicio del visor INAMHI','fecha_fin':date.date().isoformat(),
       'fecha_servicio':fmt(date),'inicializacion':fmt(init),'generado':datetime.now(LOCAL).isoformat(),
       'intervalos':1,'unidad':'mm','convencion_temporal':'Producto diario. Extremos horarios del acumulado pendientes de confirmar; TIME no se interpreta como inicio ni fin local.',
       'bounds':[[bottom,left],[top_y,right]],'imagen':f'data/wrf/{key}.png','raster':f'data/wrf/{key}.tif',
       'resolucion':'0.027 grados (aproximadamente 3 km)',
       'metodo_media':'Ponderada por area de interseccion con celdas nativas; solo cobertura completa.',
       'metodo_maxima':'Mayor valor de celda nativa con interseccion de area positiva; solo cobertura completa.',
+      'metodo_minima':'Menor valor de celda nativa con interseccion de area positiva; solo cobertura completa.',
+      'metodo_suma':'Suma sin ponderar de las celdas nativas validas con interseccion de area positiva; no es volumen ni acumulacion temporal.',
       'leyenda':legend,'cantones':stats,
       'destacados':top,'criterio_destacados':'Mayor media territorial ponderada por area; solo cantones con cobertura completa y lluvia prevista positiva. Incluye empates.',
       'originales':[r.url]}
