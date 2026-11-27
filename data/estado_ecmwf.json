@@ -1,9 +1,9 @@
 {
   "fuente": "ECMWF IFS",
   "estado": "completo",
-  "intento": "2026-11-26T21:26:12.935051-05:00",
+  "intento": "2026-11-27T08:17:25.075167-05:00",
   "inicializacion": "2026-11-26T12:00:00.000Z",
-  "corrida_anterior": false,
+  "corrida_anterior": true,
   "periodos": [
     "20261126T1200Z_20261128T1200Z",
     "20261126T1200Z_20261129T1200Z",
@@ -11,5 +11,5 @@
     "20261126T1200Z_20261201T1200Z",
     "20261126T1200Z_20261202T1200Z"
   ],
-  "mensaje": "Cinco periodos 07h00-07h00 Ecuador."
+  "mensaje": "Cinco periodos 07h00-07h00 Ecuador. Se usa la corrida completa anterior; comprobar vigencias."
 }

@@ -1,7 +1,11 @@
 {
   "fuente": "PDIR-Now CHRS",
-  "intento": "2026-11-26T21:25:01.257854-05:00",
-  "fecha_fin_solicitada": "2026-11-26",
+  "intento": "2026-11-27T08:15:18.477991-05:00",
+  "fecha_fin_solicitada": "2026-11-27",
   "estado": "completo",
-  "mensaje": "24 intervalos completos; simbologia actualizada."
+  "mensaje": "Completo: 24/24 horas procesadas.",
+  "fecha_fin": "2026-11-27",
+  "horas_acumuladas": 24,
+  "inicio": "2026-11-26T07:00:00-05:00",
+  "fin": "2026-11-27T07:00:00-05:00"
 }
