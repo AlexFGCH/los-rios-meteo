@@ -1,15 +1,15 @@
 {
   "fuente": "ECMWF IFS",
   "estado": "completo",
-  "intento": "2026-11-27T16:14:50.371040-05:00",
-  "inicializacion": "2026-11-26T12:00:00.000Z",
-  "corrida_anterior": true,
+  "intento": "2026-11-27T17:15:47.182341-05:00",
+  "inicializacion": "2026-11-27T12:00:00.000Z",
+  "corrida_anterior": false,
   "periodos": [
-    "20261126T1200Z_20261128T1200Z",
-    "20261126T1200Z_20261129T1200Z",
-    "20261126T1200Z_20261130T1200Z",
-    "20261126T1200Z_20261201T1200Z",
-    "20261126T1200Z_20261202T1200Z"
+    "20261127T1200Z_20261129T1200Z",
+    "20261127T1200Z_20261130T1200Z",
+    "20261127T1200Z_20261201T1200Z",
+    "20261127T1200Z_20261202T1200Z",
+    "20261127T1200Z_20261203T1200Z"
   ],
-  "mensaje": "Cinco periodos 07h00-07h00 Ecuador. Se usa la corrida completa anterior; comprobar vigencias."
+  "mensaje": "Cinco periodos 07h00-07h00 Ecuador."
 }
