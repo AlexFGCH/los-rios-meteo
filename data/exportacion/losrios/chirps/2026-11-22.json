@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "firma": "dd34a63adde2cba69b4f8fc012dcd9b5883fc3cb939c093a04a6d263b90f33a2",
+  "fuente": "chirps",
+  "ambito": "losrios",
+  "unidad": "mm",
+  "original_generado": "2026-11-27T13:56:55.340102-05:00",
+  "generado": "2026-11-27T18:58:15.730092+00:00",
+  "imagen": "data/exportacion/losrios/chirps/2026-11-22.png",
+  "bounds": [
+    [
+      -2.800000935792923,
+      -80.59999851882458
+    ],
+    [
+      0.14999910816550255,
+      -78.2999984845519
+    ]
+  ],
+  "leyenda": {
+    "metodo": "Natural Breaks (Jenks)",
+    "categorias": 5,
+    "categorias_solicitadas": 5,
+    "titulo": "Acumulado estimado (mm)",
+    "ambito": "Provincia de Los Rios",
+    "rangos": [
+      "0.00–10.24",
+      ">10.24–25.68",
+      ">25.68–42.79",
+      ">42.79–63.71",
+      ">63.71–89.10"
+    ],
+    "limites": [
+      0.0,
+      10.238,
+      25.682,
+      42.792,
+      63.711,
+      89.098
+    ],
+    "colores": [
+      "#2892c7",
+      "#a0c29b",
+      "#fafa64",
+      "#fa8d34",
+      "#e81014"
+    ]
+  },
+  "minima_mm": 0.0,
+  "maxima_mm": 89.098,
+  "maxima_tabla_mm": 89.1,
+  "celdas_validas": 310,
+  "metodo_mascara": "Celdas nativas validas con interseccion de area positiva con los 13 cantones originales de Los Rios."
+}
