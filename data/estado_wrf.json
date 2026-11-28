@@ -1,12 +1,12 @@
 {
   "fuente": "WRF",
   "estado": "completo",
-  "intento": "2026-11-28T06:46:03.257362-05:00",
-  "inicializacion": "2026-11-27T07:00:00+00:00",
+  "intento": "2026-11-28T07:53:46.826604-05:00",
+  "inicializacion": "2026-11-28T07:00:00+00:00",
   "periodos": [
-    "20261127T0700Z_20261127T0700Z",
-    "20261127T0700Z_20261128T0700Z",
-    "20261127T0700Z_20261129T0700Z"
+    "20261128T0700Z_20261128T0700Z",
+    "20261128T0700Z_20261129T0700Z",
+    "20261128T0700Z_20261130T0700Z"
   ],
   "mensaje": "Pronostico diario; intervalo horario exacto pendiente de confirmar."
 }
